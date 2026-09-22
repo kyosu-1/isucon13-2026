@@ -117,6 +117,9 @@ func initializeHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to initialize: "+err.Error())
 	}
 
+	if err := clearIconFiles(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to clear icons: "+err.Error())
+	}
 	if err := users.reload(c.Request().Context(), dbConn); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload cache: "+err.Error())
 	}

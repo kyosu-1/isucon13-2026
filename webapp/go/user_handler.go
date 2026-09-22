@@ -106,8 +106,6 @@ func getIconHandler(c echo.Context) error {
 }
 
 func postIconHandler(c echo.Context) error {
-	ctx := c.Request().Context()
-
 	if err := verifyUserSession(c); err != nil {
 		// echo.NewHTTPErrorが返っているのでそのまま出力
 		return err
@@ -123,21 +121,11 @@ func postIconHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "failed to decode the request body as json")
 	}
 
-	// 書き込みは1文だけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
-	tx := dbConn
-
-	// DELETE → INSERT だと user_id の二次索引のギャップロック同士でデッドロックする（並行更新で 24 件の 500）。
-	// user_id を UNIQUE にして 1 文の upsert にする
-	rs, err := tx.ExecContext(ctx, "INSERT INTO icons (user_id, image) VALUES (?, ?) ON DUPLICATE KEY UPDATE image = VALUES(image), id = LAST_INSERT_ID(id)", userID, req.Image)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to insert new user icon: "+err.Error())
+	// 画像はローカルファイルに書く（DB の LONGBLOB 書き込みが DB 時間の 31% だった）。id は user_id を返す
+	if err := saveIconFile(userID, req.Image); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to save icon: "+err.Error())
 	}
-
-	iconID, err := rs.LastInsertId()
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get last inserted icon id: "+err.Error())
-	}
-
+	iconID := userID
 	users.setIcon(userID, req.Image)
 
 	return c.JSON(http.StatusCreated, &PostIconResponse{

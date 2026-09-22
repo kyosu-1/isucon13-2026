@@ -58,12 +58,8 @@ func (uc *userCache) reload(ctx context.Context, db *sqlx.DB) error {
 	if err := db.SelectContext(ctx, &themes, "SELECT * FROM themes"); err != nil {
 		return err
 	}
-	type iconRow struct {
-		UserID int64  `db:"user_id"`
-		Image  []byte `db:"image"`
-	}
-	var icons []iconRow
-	if err := db.SelectContext(ctx, &icons, "SELECT user_id, image FROM icons"); err != nil {
+	icons, err := loadIconFiles()
+	if err != nil {
 		return err
 	}
 
@@ -81,10 +77,10 @@ func (uc *userCache) reload(ctx context.Context, db *sqlx.DB) error {
 			cu.Theme = t
 		}
 	}
-	for _, ic := range icons {
-		if cu, ok := byID[ic.UserID]; ok {
-			cu.Image = ic.Image
-			cu.IconHash = fmt.Sprintf("%x", sha256.Sum256(ic.Image))
+	for uid, image := range icons {
+		if cu, ok := byID[uid]; ok {
+			cu.Image = image
+			cu.IconHash = fmt.Sprintf("%x", sha256.Sum256(image))
 		}
 	}
 
@@ -457,4 +453,53 @@ func likeContains(text, word string) (hit bool, ok bool) {
 		return false, false
 	}
 	return strings.Contains(text, word), true
+}
+
+// ---- アイコン画像はローカルファイルに置く ----
+//
+// icons テーブルへの LONGBLOB の upsert が 1回 5ms・DB 時間の 31% だった。
+// 画像は <iconDir>/<user_id> に書く（tmp に書いて rename）。再起動後もファイルは残るので、
+// 起動時にここから読み直す。initialize で全部消す。DB の icons テーブルは使わない。
+
+const iconDir = "../icons"
+
+func loadIconFiles() (map[int64][]byte, error) {
+	if err := os.MkdirAll(iconDir, 0o755); err != nil {
+		return nil, err
+	}
+	entries, err := os.ReadDir(iconDir)
+	if err != nil {
+		return nil, err
+	}
+	out := make(map[int64][]byte, len(entries))
+	for _, e := range entries {
+		if e.IsDir() {
+			continue
+		}
+		var uid int64
+		if _, err := fmt.Sscanf(e.Name(), "%d", &uid); err != nil {
+			continue // tmp ファイルなど
+		}
+		b, err := os.ReadFile(iconDir + "/" + e.Name())
+		if err != nil {
+			return nil, err
+		}
+		out[uid] = b
+	}
+	return out, nil
+}
+
+func saveIconFile(userID int64, image []byte) error {
+	tmp := fmt.Sprintf("%s/.tmp-%d-%d", iconDir, userID, os.Getpid())
+	if err := os.WriteFile(tmp, image, 0o644); err != nil {
+		return err
+	}
+	return os.Rename(tmp, fmt.Sprintf("%s/%d", iconDir, userID))
+}
+
+func clearIconFiles() error {
+	if err := os.RemoveAll(iconDir); err != nil {
+		return err
+	}
+	return os.MkdirAll(iconDir, 0o755)
 }
