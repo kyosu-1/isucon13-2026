@@ -258,3 +258,30 @@ access log を見ると、**ベンチは名前解決どおりには来ない**�
 pipe（全リクエストの 7 割）は app / DB の無い isu3 に置くのが正解。ユーザー名の重みはブレの範囲。
 現在の構成: **isu1 = app + DNS + nginx / isu2 = MySQL + nginx / isu3 = nginx（pipe）**。
 ベンチ機（8 vCPU）が busy 63% まで上がってきた。
+
+### 19:41 再起動試験（nginx 3台構成）→ 697114（pass）
+
+3台同時 reboot → nginx ×3 / app / MySQL が自動起動 → API 応答 → ベンチ pass。
+
+### 19:44 pprof（同一コード 698626）
+
+syscall 22%（ネットワーク I/O）、go-json 23%（うち HTML エスケープ 17%）、runtime.schedule 7%。
+
+### 19:47 JSON の HTML エスケープ無効化 → 702730（±0、採用）
+
+### 19:49 実験: スパム判定を配信者単位に → 654781（エラー 171 で減らず、-6.8%）→ revert
+
+`expected:400 actual:201` は配信者単位で見ても消えない。ベンチ側の問題（マニュアル記載）と確定。
+
+### 19:52 実験: GET icon に Cache-Control: max-age=1 → 701297（icon 488k 回で不変）→ revert
+
+ベンチはキャッシュ制御ヘッダを見ない。
+
+### 19:54 計測 OFF（slow log なし）→ 644130 / 708197
+
+`make measure-off` 後の 2 回。ブレの範囲（2峰性）。**最高記録 708,197**。
+
+### この時点の負荷
+
+isu1 busy 73%（app 109% + nginx 13%）/ isu2 58%（mysqld 65% + nginx 30%）/ isu3 64%（nginx 105%）/
+**ベンチ機 68%（負荷後半は 73%）**。ベンチ機（本番相当の 8 vCPU）が頭打ちに近づいている。
