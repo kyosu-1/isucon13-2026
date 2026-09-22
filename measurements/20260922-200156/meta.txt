@@ -1,0 +1,9 @@
+timestamp : 20260922-200156
+commit    : e825350  実験: 配信者サブドメインを isu2:isu3 = 1:1 に（isu1 は app 専念。isu1 73% / isu2 58% / isu3 64%）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 実験: サブドメインを isu2/isu3 のみに
+dirty     : 0 files uncommitted (webapp/ etc/)
