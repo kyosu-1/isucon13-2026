@@ -147,6 +147,7 @@ func initializeHandler(c echo.Context) error {
 
 func main() {
 	e := echo.New()
+	e.JSONSerializer = goJSONSerializer{}
 	e.Debug = false
 	e.Logger.SetLevel(echolog.ERROR)
 	cookieStore := sessions.NewCookieStore(secret)
