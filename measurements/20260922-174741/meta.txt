@@ -1,0 +1,8 @@
+timestamp : 20260922-174741
+commit    : 45da0c4  タグと配信のタグをメモリキャッシュ（/api/tag、fillLivestreamResponse、search の tag→id）
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : タグのメモリキャッシュ
+dirty     : 0 files uncommitted (webapp/ etc/)

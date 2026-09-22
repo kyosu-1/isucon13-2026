@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+landscape-sysin                0.2
+systemd-journal                0.0
+multipathd                     0.0
+kworker/u4:3-events_power_efficient       0.0
+jbd2/nvme0n1p1-8               0.0
+dbus-daemon                    0.0

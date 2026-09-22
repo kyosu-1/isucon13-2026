@@ -1,0 +1,94 @@
+{
+  "pass": true,
+  "score": 64122,
+  "error_count": 7,
+  "errors": [
+    {
+      "count": 4,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] GET /api/livestream/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/moderate: Post \"https://yamazakikyosukeN.u.isucon.local:N/api/livestream/N/moderate\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/reservation: Post \"https://ogawayoichiN.u.isucon.local:N/api/livestream/reservation\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7522/livecomment/1012/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7523/livecomment/1066/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7523/livecomment/1068/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] GET /api/livestream/7522/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)",
+    "[一般エラー] POST /api/livestream/7525/livecomment/1377/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 19,
+      "fail": 2
+    },
+    "dns-watertorture-attack": {
+      "success": 32,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 167,
+      "fail": 1
+    },
+    "streamer-moderate": {
+      "success": 103,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 44,
+      "fail": 11
+    },
+    "viewer-spam": {
+      "success": 22,
+      "fail": 0
+    },
+    "viewer": {
+      "success": 322,
+      "fail": 3
+    },
+    "aggressive-streamer-moderate-fail": {
+      "success": 0,
+      "fail": 2
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 3
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 11
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 5548,
+    "failed": 1
+  },
+  "viewers_completed": 322,
+  "phases": {
+    "initialize_sec": 2.7,
+    "pretest_sec": 5.3,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 5548",
+    "売上: 64122"
+  ],
+  "dns_resolved": 5548,
+  "scenario_success": 709,
+  "scenario_fail": 34
+}

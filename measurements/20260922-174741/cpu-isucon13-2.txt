@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+landscape-sysin                0.2
+systemd                        0.0
+packagekitd                    0.0
+multipathd                     0.0
+dbus-daemon                    0.0
