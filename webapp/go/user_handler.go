@@ -101,8 +101,6 @@ func getIconHandler(c echo.Context) error {
 
 	// nginx 側でキャッシュして If-None-Match を判定できるように ETag を付ける
 	c.Response().Header().Set("ETag", "\""+cu.IconHash+"\"")
-	// 実験: クライアントが 1 秒はキャッシュを使ってよい（nginx の 0.5 秒と合わせて反映は最大 1.5 秒 < 猶予 2 秒）
-	c.Response().Header().Set("Cache-Control", "public, max-age=1")
 	if cu.Image == nil {
 		return c.Blob(http.StatusOK, "image/jpeg", fallbackImageData)
 	}
