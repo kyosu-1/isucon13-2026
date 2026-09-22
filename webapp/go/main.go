@@ -230,6 +230,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	// DNS（PowerDNS の代わり。ISUCON13_POWERDNS_DISABLED=true なら起動しない）
+	if v, _ := os.LookupEnv("ISUCON13_POWERDNS_DISABLED"); v != "true" {
+		if err := startDNSServer(powerDNSSubdomainAddress); err != nil {
+			e.Logger.Errorf("failed to start DNS server: %v", err)
+			os.Exit(1)
+		}
+	}
+
 	// HTTPサーバ起動
 	listenAddr := net.JoinHostPort("", strconv.Itoa(listenPort))
 	if err := e.Start(listenAddr); err != nil {

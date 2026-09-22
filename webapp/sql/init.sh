@@ -80,6 +80,7 @@ mysql -u"$ISUCON_DB_USER" \
 		--port "$ISUCON_DB_PORT" \
 		"$ISUCON_DB_NAME" < initial_livecomments.sql
 
-bash ../pdns/init_zone.sh 
+# DNS はアプリ内サーバーが users から引くので、PowerDNS のゾーン初期化は不要
+# bash ../pdns/init_zone.sh
 
 
