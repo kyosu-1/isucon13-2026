@@ -203,3 +203,32 @@ Cookie の値を鍵にメモ。isupipe の CPU が 117% → 71%。
 
 isu3 の access log: `pipe.u.isucon.local` 宛が 69%（うち GET icon が 270682 回、ほぼ全部 304）、
 配信者サブドメイン宛が 31%。nginx を 2 台に分けても pipe の名前解決結果が固定される限り偏る。
+
+### 18:56 再起動試験 → 479001（pass）
+
+1回目は「アプリが isu2 の MySQL より先に起動 → exit → 5 秒後に再起動」の間に疎通確認が走って失敗判定。
+アプリに DB 接続の 60 秒リトライ、`restart-test.sh` に API の応答待ちを入れて再試験 → 3台とも自動起動、pass。
+
+### 18:58〜19:10 47.9万 と 42.5万 の2峰性の追跡（結論: ブレ）
+
+再起動直後 479001 → 次 425458 → アプリ再起動 428672 → MySQL 再起動 479375 → 次 426837 → ANALYZE TABLE 424947
+→ MySQL 再起動 424337。「MySQL 再起動で速くなる」は 2 回目で再現せず、**ベンチ側の乱数（予約する時間帯など）による
+2峰性**と判断。速い回は視聴者数が 2426〜2438、遅い回は 2185〜2204 で、他の指標（DNS、予約成功数 1398）は同じ。
+`run.sh` に MySQL の GLOBAL STATUS 増分（`mysql-status.txt`）を残すようにした。
+
+### 19:12 ベンチ機のメモリを 8 GB に制限（本番相当）
+
+ユーザーの指示: 本番のベンチマーカーは ECS の 8 vCPU / 8 GB。ベンチ機 c5.2xlarge は 8 vCPU / 16 GB。
+EC2 に 8 vCPU / 8 GB のタイプは無いので、`systemd-run --scope -p MemoryMax=8G -p MemorySwapMax=0` で
+ベンチプロセスだけ制限。ピーク RSS は 525 MB（`/usr/bin/time` で bench.log に記録）なので結果への影響なし（421775）。
+
+### 19:15 goccy/go-json → 493778 → 再計測 499869（+17%）
+
+pprof で encoding/json のエンコードが約 20%。echo の JSONSerializer を差し替え。出力は同じ。
+
+### 19:20 GET icon を nginx でキャッシュ → 502859（±0）
+
+app が `ETag` を返し、isu3 の nginx が `proxy_cache`（有効 1 秒）で If-None-Match を判定して 304。
+1回目は `proxy_cache_path /var/cache/nginx/...` の親ディレクトリが無く `nginx -t` が落ちて、
+**deploy が黙って旧設定のまま**動いていた。`deploy.sh` は nginx -t の失敗を表示して止めるようにした。
+スコアは変わらない（icon の往復は律速ではなかった）が、app の負荷は減るので採用。
