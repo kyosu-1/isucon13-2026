@@ -1,0 +1,9 @@
+timestamp : 20260922-195551
+commit    : a79d93e  bench: 644130 計測OFF 1回目
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 計測OFF 2回目
+dirty     : 0 files uncommitted (webapp/ etc/)
