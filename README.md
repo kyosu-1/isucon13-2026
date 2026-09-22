@@ -9,7 +9,7 @@
 | | スコア |
 | --- | ---: |
 | ベースライン（Go / 無改善、計測ON） | 3,211 |
-| **最高記録** | **708,197**（計測OFF。同一コードで 64〜71万の 2峰性のブレあり） |
+| **最高記録** | **708,197**（計測OFF）。最終構成は 697〜703k で安定（6 回連続） |
 
 - 再起動試験（3台同時 reboot → 全サービス自動起動 → ベンチ）に合格
 - ベンチマーカーは本番（ECS 8 vCPU / 8 GB）相当に、ベンチプロセスを cgroup で 8 GB に制限して実行
@@ -47,7 +47,7 @@
 | --- | --- |
 | `isucon13-1` (c5.large) | Go アプリ（:8080、状態をメモリに持つので 1 プロセス）+ アプリ内 DNS（:53、PowerDNS の代わり）+ nginx |
 | `isucon13-2` (c5.large) | MySQL + nginx |
-| `isucon13-3` (c5.large) | nginx（`pipe.u.isucon.local` 宛）。配信者サブドメインは DNS が名前のハッシュで 3 台の nginx に振り分ける |
+| `isucon13-3` (c5.large) | nginx（`pipe.u.isucon.local` 宛）。配信者サブドメインは DNS が名前のハッシュで isu2/isu3 の nginx に振り分ける |
 | `isucon13-4` (c5.2xlarge) | ベンチマーカー専用（競技サーバーではない） |
 
 役割は `etc/isuN/services` が正。改善の経緯は `docs/journal.md`、スコアは `scores/log.md`。
