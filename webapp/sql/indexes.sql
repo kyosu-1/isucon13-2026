@@ -1,6 +1,7 @@
 -- 追加インデックス（init.sh が initialize のたびに流す。init.sql は TRUNCATE なのでインデックスは残る。
 -- 既にあると "Duplicate key name" になるので mysql -f で流して無視する）
-CREATE INDEX icons_user_id ON icons (user_id);
+ALTER TABLE icons DROP INDEX icons_user_id;
+CREATE UNIQUE INDEX icons_user_id_uniq ON icons (user_id);
 CREATE INDEX themes_user_id ON themes (user_id);
 CREATE INDEX livestreams_user_id ON livestreams (user_id);
 CREATE INDEX livestream_tags_livestream_id ON livestream_tags (livestream_id);

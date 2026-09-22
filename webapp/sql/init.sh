@@ -25,12 +25,12 @@ mysql -f -u"$ISUCON_DB_USER" \
 		-p"$ISUCON_DB_PASSWORD" \
 		--host "$ISUCON_DB_HOST" \
 		--port "$ISUCON_DB_PORT" \
-		"$ISUCON_DB_NAME" < indexes.sql 2>&1 | grep -v "Duplicate key name" || true
+		"$ISUCON_DB_NAME" < indexes.sql 2>&1 | grep -Ev "Duplicate key name|check that column/key exists" || true
 mysql -f -u"isudns" \
 		-p"isudns" \
 		--host "$ISUCON_DB_HOST" \
 		--port "$ISUCON_DB_PORT" \
-		"isudns" < indexes_dns.sql 2>&1 | grep -v "Duplicate key name" || true
+		"isudns" < indexes_dns.sql 2>&1 | grep -Ev "Duplicate key name|check that column/key exists" || true
 
 mysql -u"$ISUCON_DB_USER" \
 		-p"$ISUCON_DB_PASSWORD" \

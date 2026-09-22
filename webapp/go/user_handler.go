@@ -140,11 +140,9 @@ func postIconHandler(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	if _, err := tx.ExecContext(ctx, "DELETE FROM icons WHERE user_id = ?", userID); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to delete old user icon: "+err.Error())
-	}
-
-	rs, err := tx.ExecContext(ctx, "INSERT INTO icons (user_id, image) VALUES (?, ?)", userID, req.Image)
+	// DELETE → INSERT だと user_id の二次索引のギャップロック同士でデッドロックする（並行更新で 24 件の 500）。
+	// user_id を UNIQUE にして 1 文の upsert にする
+	rs, err := tx.ExecContext(ctx, "INSERT INTO icons (user_id, image) VALUES (?, ?) ON DUPLICATE KEY UPDATE image = VALUES(image), id = LAST_INSERT_ID(id)", userID, req.Image)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to insert new user icon: "+err.Error())
 	}
