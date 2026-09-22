@@ -1,0 +1,15 @@
+      3 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/livecomment: code=N, message=failed to get hitspam: context canc
+      3 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/livecomment/:livecomment_id/report: code=N, message=livecomment 
+      2 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/login: code=N, message=invalid username or password"}
+      2 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/reservation: code=N, message=bad reservation time range"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"write tcp N.N.N.N:N->N.N.N.N:N: write: broken pipe"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/register: code=N, message=the username 'pipe' is reserved"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/register: code=N, message=failed to insert user: Error N (N): Duplicate entry 'aaa' for ke
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/register: code=N, message=failed to commit: sql: transaction has already been committed or
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/search: code=N, message=failed to get livestreams: context canceled"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/reservation: code=N, message=予約期間 N ~ Nに対して、予約区間 N ~ 
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/reservation: code=N, message=failed to update reservation_slot: context cancele
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/reaction: write tcp N.N.N.N:N->N.N.N.N:N: write: broken pipe"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/moderate: code=N, message=failed to delete old livecomments that
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/livecomment: code=N, message=このコメントがスパム判�
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/livecomment: code=N, message=failed to commit: sql: transaction 

@@ -1,0 +1,8 @@
+timestamp : 20260922-175557
+commit    : 042f9c8  報告一覧: モデレーションで消えたコメントの報告を除外（fill で no rows → 500 になっていた）
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : 報告一覧の 500 修正
+dirty     : 0 files uncommitted (webapp/ etc/)

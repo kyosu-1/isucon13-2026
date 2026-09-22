@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+sshd                           0.0
+rcu_sched                      0.0
+landscape-sysin                0.0
+kworker/u4:3-flush-259:0       0.0
+dbus-daemon                    0.0
