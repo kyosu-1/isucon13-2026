@@ -1,0 +1,7 @@
+   7902 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/reservation: code=N, message=予約期間 N ~ Nに対して、予約区間 N ~ 
+      2 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/login: code=N, message=invalid username or password"}
+      2 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/reservation: code=N, message=bad reservation time range"}
+      2 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/moderate: code=N, message=failed to sum old livecomments that hi
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/register: code=N, message=the username 'pipe' is reserved"}
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/register: code=N, message=failed to insert user: Error N (N): Duplicate entry 'aaa' for ke
+      1 {"time":"N-N-NTN:N:N.NZ","level":"ERROR","prefix":"echo","file":"main.go","line":"N","message":"error at /api/livestream/:livestream_id/livecomment: code=N, message=このコメントがスパム判�
