@@ -1,0 +1,9 @@
+timestamp : 20260922-194848
+commit    : 30b9e91  実験: スパム判定を配信者の全配信の NG ワードで行う
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 実験: NG ワードを配信者単位で判定
+dirty     : 0 files uncommitted (webapp/ etc/)
