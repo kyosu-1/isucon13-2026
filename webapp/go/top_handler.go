@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 )
 
@@ -41,14 +42,11 @@ func getStreamerThemeHandler(c echo.Context) error {
 
 	username := c.Param("username")
 
-	tx, err := dbConn.BeginTxx(ctx, nil)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to begin transaction: "+err.Error())
-	}
-	defer tx.Rollback()
+	// 読み取りだけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
+	tx := dbConn
 
 	userModel := UserModel{}
-	err = tx.GetContext(ctx, &userModel, "SELECT id FROM users WHERE name = ?", username)
+	err := sqlx.GetContext(ctx, tx, &userModel, "SELECT id FROM users WHERE name = ?", username)
 	if errors.Is(err, sql.ErrNoRows) {
 		return echo.NewHTTPError(http.StatusNotFound, "not found user that has the given username")
 	}
@@ -57,12 +55,8 @@ func getStreamerThemeHandler(c echo.Context) error {
 	}
 
 	themeModel := ThemeModel{}
-	if err := tx.GetContext(ctx, &themeModel, "SELECT * FROM themes WHERE user_id = ?", userModel.ID); err != nil {
+	if err := sqlx.GetContext(ctx, tx, &themeModel, "SELECT * FROM themes WHERE user_id = ?", userModel.ID); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get user theme: "+err.Error())
-	}
-
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 
 	theme := Theme{

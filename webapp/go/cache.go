@@ -156,12 +156,12 @@ func (cu *cachedUser) toUser() User {
 }
 
 // id からユーザーのレスポンスを作る（キャッシュに無ければ DB）
-func userResponseByID(ctx context.Context, tx *sqlx.Tx, id int64) (User, error) {
+func userResponseByID(ctx context.Context, tx sqlx.QueryerContext, id int64) (User, error) {
 	if cu, ok := users.getByID(id); ok {
 		return cu.toUser(), nil
 	}
 	um := UserModel{}
-	if err := tx.GetContext(ctx, &um, "SELECT * FROM users WHERE id = ?", id); err != nil {
+	if err := sqlx.GetContext(ctx, tx, &um, "SELECT * FROM users WHERE id = ?", id); err != nil {
 		return User{}, err
 	}
 	return fillUserResponse(ctx, tx, um)
@@ -292,12 +292,12 @@ func (lc *livestreamCache) add(m LivestreamModel) {
 }
 
 // id から配信を引く（キャッシュに無ければ DB。無ければ sql.ErrNoRows）
-func livestreamByID(ctx context.Context, tx *sqlx.Tx, id int64) (LivestreamModel, error) {
+func livestreamByID(ctx context.Context, tx sqlx.QueryerContext, id int64) (LivestreamModel, error) {
 	if m, ok := livestreams.get(id); ok {
 		return *m, nil
 	}
 	var m LivestreamModel
-	if err := tx.GetContext(ctx, &m, "SELECT * FROM livestreams WHERE id = ?", id); err != nil {
+	if err := sqlx.GetContext(ctx, tx, &m, "SELECT * FROM livestreams WHERE id = ?", id); err != nil {
 		return LivestreamModel{}, err
 	}
 	return m, nil
