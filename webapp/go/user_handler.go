@@ -99,6 +99,8 @@ func getIconHandler(c echo.Context) error {
 		}
 	}
 
+	// nginx 側でキャッシュして If-None-Match を判定できるように ETag を付ける
+	c.Response().Header().Set("ETag", "\""+cu.IconHash+"\"")
 	if cu.Image == nil {
 		return c.Blob(http.StatusOK, "image/jpeg", fallbackImageData)
 	}
