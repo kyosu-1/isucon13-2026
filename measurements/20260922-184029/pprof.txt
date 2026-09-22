@@ -1,0 +1,44 @@
+File: isupipe
+Build ID: b9f32973941ad7c643a118512e18acca3d757ae3
+Type: cpu
+Time: 2026-09-22 18:41:26 JST
+Duration: 30s, Total samples = 12.09s (40.30%)
+Showing nodes accounting for 5.92s, 48.97% of 12.09s total
+Dropped 634 nodes (cum <= 0.06s)
+Showing top 35 nodes out of 299
+      flat  flat%   sum%        cum   cum%
+     1.95s 16.13% 16.13%      1.95s 16.13%  internal/runtime/syscall/linux.Syscall6
+     0.54s  4.47% 20.60%      0.92s  7.61%  encoding/json/internal/jsonwire.AppendQuote
+     0.51s  4.22% 24.81%      2.50s 20.68%  encoding/json/v2.makeStructArshaler.func2
+     0.27s  2.23% 27.05%      0.27s  2.23%  unicode/utf8.decodeRuneSlow
+     0.26s  2.15% 29.20%      0.26s  2.15%  runtime.futex
+     0.26s  2.15% 31.35%      0.26s  2.15%  runtime.memmove
+     0.14s  1.16% 32.51%      0.19s  1.57%  reflect.Value.Field
+     0.12s  0.99% 33.50%      1.15s  9.51%  encoding/json/v2.makeStringArshaler.func1
+     0.10s  0.83% 34.33%      0.92s  7.61%  encoding/gob.(*Decoder).compileDec
+     0.10s  0.83% 35.15%      0.12s  0.99%  runtime.mallocgcSmallScanNoHeaderSC5
+     0.09s  0.74% 35.90%      0.19s  1.57%  encoding/json/jsontext.(*encoderState).WriteToken
+     0.09s  0.74% 36.64%      0.50s  4.14%  net/textproto.readMIMEHeader
+     0.09s  0.74% 37.39%      0.09s  0.74%  time.runtimeNow
+     0.09s  0.74% 38.13%      0.09s  0.74%  vendor/golang.org/x/net/http/httpguts.isCTL
+     0.08s  0.66% 38.79%      0.08s  0.66%  cmpbody
+     0.08s  0.66% 39.45%      0.08s  0.66%  crypto/internal/fips140/sha256.blockAVX2
+     0.08s  0.66% 40.12%      0.18s  1.49%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Load
+     0.08s  0.66% 40.78%      0.87s  7.20%  runtime.mallocgc
+     0.08s  0.66% 41.44%      0.08s  0.66%  runtime.mallocgcSmallScanNoHeaderSC2
+     0.08s  0.66% 42.10%      0.09s  0.74%  runtime.mallocgcTinySC2
+     0.07s  0.58% 42.68%      0.15s  1.24%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.07s  0.58% 43.26%      0.07s  0.58%  internal/runtime/maps.memHashAES
+     0.07s  0.58% 43.84%      0.07s  0.58%  internal/strconv.formatBase10
+     0.07s  0.58% 44.42%      0.07s  0.58%  memeqbody
+     0.06s   0.5% 44.91%      0.07s  0.58%  reflect.Value.String
+     0.06s   0.5% 45.41%      0.07s  0.58%  runtime.mallocgcSmallScanNoHeaderSC6
+     0.06s   0.5% 45.91%      0.25s  2.07%  runtime.mapaccess2_faststr
+     0.06s   0.5% 46.40%      0.16s  1.32%  sort.partition
+     0.05s  0.41% 46.82%      0.66s  5.46%  encoding/gob.(*Decoder).decOpFor
+     0.05s  0.41% 47.23%      0.26s  2.15%  net/http.(*chunkWriter).writeHeader
+     0.05s  0.41% 47.64%      0.36s  2.98%  runtime.netpoll
+     0.04s  0.33% 47.97%      0.23s  1.90%  encoding/json/jsontext.(*Encoder).WriteToken
+     0.04s  0.33% 48.30%      0.18s  1.49%  main.(*scoreCache).userRank
+     0.04s  0.33% 48.64%      0.13s  1.08%  reflect.(*rtype).FieldByName
+     0.04s  0.33% 48.97%      0.09s  0.74%  reflect.(*structType).FieldByName

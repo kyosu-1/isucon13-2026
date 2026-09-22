@@ -1,0 +1,9 @@
+timestamp : 20260922-184029
+commit    : a1fbe8f  bench: 415094 アイコンをファイルに（-3.6%、DB は busy 78%→33%）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : 同一コード再計測（ブレ確認）
+dirty     : 0 files uncommitted (webapp/ etc/)
