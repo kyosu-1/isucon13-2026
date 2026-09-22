@@ -1,0 +1,23 @@
+2026-09-22T11:45:37.714Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T11:45:37.714Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T11:45:37.714Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T11:45:37.714Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T11:45:40.415Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T11:45:44.754Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T11:45:44.754Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T11:45:46.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T11:45:48.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 4}
+2026-09-22T11:45:50.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 6}
+2026-09-22T11:45:52.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 9}
+2026-09-22T11:45:54.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 13}
+2026-09-22T11:45:56.764Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 15}
+2026-09-22T11:46:44.755Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T11:46:44.757Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "fyamazaki0", "livestream_id": 7722, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:46:44.757Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "kyosukekobayashi0", "livestream_id": 8089, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:46:44.758Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "yhayashi1", "livestream_id": 8497, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:46:44.758Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "satomikobayashi2", "livestream_id": 8547, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:46:45.112Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T11:46:45.112Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T11:46:45.112Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T11:46:45.112Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T11:46:45.119Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 3594}

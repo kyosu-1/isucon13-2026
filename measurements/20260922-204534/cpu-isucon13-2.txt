@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+mysqld                        61.4
+nginx                         34.1
+landscape-sysin                1.4
+pidstat                        0.4
+rcu_sched                      0.1
+jbd2/nvme0n1p1-8               0.1
+vmstat                         0.0
+systemd-logind                 0.0
+systemd                        0.0
+sshd                           0.0
+kworker/u4:4-flush-259:0       0.0
+kworker/u4:1-flush-259:0       0.0
+ksoftirqd/1                    0.0
+ksoftirqd/0                    0.0
+dbus-daemon                    0.0
