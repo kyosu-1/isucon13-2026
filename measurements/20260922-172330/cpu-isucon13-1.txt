@@ -1,0 +1,6 @@
+COMMAND                   AVG_CPU%
+systemd-logind                 0.5
+systemd                        0.5
+sshd                           0.5
+rcu_sched                      0.5
+dbus-daemon                    0.5
