@@ -130,6 +130,10 @@ ssh "$BENCH" "cat /tmp/vmstat.txt" > "$OUT/vmstat-$BENCH.txt" 2>/dev/null &
   && ./tools/analyze/mysql-status.sh diff "$OUT/raw-mysql-status-before.txt" "$OUT/raw-mysql-status-after.txt" > "$OUT/mysql-status.txt"; \
   rm -f "$OUT/raw-mysql-status-before.txt" "$OUT/raw-mysql-status-after.txt" ) &
 ./tools/analyze/alp.sh "$ENTRY" > "$OUT/alp.txt" 2>&1 &
+# nginx が動く全ノードの接続の作られ方（5 秒ごとの新規接続・TLS フルハンドシェイク）
+for h in "${APP_HOSTS_ARR[@]}"; do
+  ( ssh "$h" 'systemctl is-active --quiet nginx' 2>/dev/null && ./tools/analyze/conns.sh "$h" > "$OUT/conns-$h.txt" 2>/dev/null || true ) &
+done
 ./tools/analyze/slow.sh "$DB_HOST" > "$OUT/slow.txt" 2>&1 &
 wait
 

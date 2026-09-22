@@ -11,4 +11,5 @@ ISUCON13_DNS_USER_ADDRESS="__ISU2_IP__,__ISU3_IP__"
 # GC の頻度を下げる（ヒープは数百 MB、メモリは 4GB）
 GOGC=400
 # pipe の A レコード（問い合わせごとにラウンドロビン、TTL 1 秒。TLS ハンドシェイクを 3 台に分散）
-ISUCON13_DNS_PIPE_ADDRESS="__ISU3_IP__,__ISU3_IP__,__ISU3_IP__,__ISU2_IP__"
+# 無効（空）: RR は 65〜66万で固定 isu3 の 70万より低かった（measurements/20260922-202053, 202301）
+ISUCON13_DNS_PIPE_ADDRESS=""
