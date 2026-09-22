@@ -1,0 +1,9 @@
+timestamp : 20260922-202053
+commit    : c34fe9a  実験: pipe の A レコードを問い合わせごとにラウンドロビン（TTL 1 秒、isu3:isu1:isu2 = 2:1:1）。ログに upstream_cache_status
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 実験: pipe をラウンドロビン（TTL 1）
+dirty     : 0 files uncommitted (webapp/ etc/)
