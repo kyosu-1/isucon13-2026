@@ -1,0 +1,9 @@
+timestamp : 20260922-181131
+commit    : c20db3b  予約: 枠の残数チェックの N+1 を消し、start_at の範囲を両側から絞る
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : 予約枠の範囲・N+1
+dirty     : 0 files uncommitted (webapp/ etc/)
