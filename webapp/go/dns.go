@@ -15,6 +15,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"hash/fnv"
 	"log"
 	"net"
 	"os"
@@ -33,7 +34,7 @@ const (
 var (
 	dnsStaticNames = map[string]struct{}{} // ゾーンファイル由来の名前（apex は ""）
 	dnsAddr        net.IP                  // ゾーンファイル由来の名前（pipe など）に返す IP
-	dnsUserAddr    net.IP                  // 配信者サブドメイン（登録ユーザー名）に返す IP。未設定なら dnsAddr
+	dnsUserAddrs   []net.IP                // 配信者サブドメイン（登録ユーザー名）に返す IP（名前のハッシュで選ぶ）。空なら dnsAddr
 	dnsSOA         *dns.SOA
 	dnsMu          sync.RWMutex
 )
@@ -114,8 +115,10 @@ func handleDNS(w dns.ResponseWriter, r *dns.Msg) {
 		dnsMu.RLock()
 		_, static := dnsStaticNames[sub]
 		dnsMu.RUnlock()
-		if !static && dnsUserAddr != nil {
-			addr = dnsUserAddr
+		if !static && len(dnsUserAddrs) > 0 {
+			h := fnv.New32a()
+			h.Write([]byte(sub))
+			addr = dnsUserAddrs[int(h.Sum32()%uint32(len(dnsUserAddrs)))]
 		}
 		m.Answer = []dns.RR{&dns.A{
 			Hdr: dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: dnsTTL},
@@ -149,10 +152,14 @@ func startDNSServer(addr string) error {
 	if dnsAddr == nil {
 		return fmt.Errorf("invalid DNS answer address: %q", addr)
 	}
+	// カンマ区切り。同じ IP を複数書けば重み付けになる（例: "ip1,ip3,ip3" なら 1:2）
 	if v, ok := os.LookupEnv("ISUCON13_DNS_USER_ADDRESS"); ok && v != "" {
-		dnsUserAddr = net.ParseIP(v).To4()
-		if dnsUserAddr == nil {
-			return fmt.Errorf("invalid ISUCON13_DNS_USER_ADDRESS: %q", v)
+		for _, a := range strings.Split(v, ",") {
+			ip := net.ParseIP(strings.TrimSpace(a)).To4()
+			if ip == nil {
+				return fmt.Errorf("invalid ISUCON13_DNS_USER_ADDRESS: %q", v)
+			}
+			dnsUserAddrs = append(dnsUserAddrs, ip)
 		}
 	}
 	if err := loadDNSZone(dnsZoneFile); err != nil {
