@@ -166,10 +166,9 @@ func postLivecommentHandler(c echo.Context) error {
 	}
 
 	// スパム判定（配信者が登録した NG ワードを含むか。LIKE '%word%' と同じ判定を Go で行う）
-	for _, ngword := range ngWords.forLivestream(livestreamModel.ID) {
-		if ngword.UserID != livestreamModel.UserID {
-			continue
-		}
+	// 実験: 配信ごとではなく配信者の全配信の NG ワードで判定する（「expected:400 actual:201」が
+	// その配信の最初の moderate より前に来ることから、ベンチは配信者単位で見ている可能性）
+	for _, ngword := range ngWords.forUser(livestreamModel.UserID) {
 		hit, ok := likeContains(req.Comment, ngword.Word)
 		if !ok {
 			// ワイルドカードを含む語だけ SQL に任せる
