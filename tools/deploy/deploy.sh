@@ -107,7 +107,9 @@ deploy_one() {
       if [ -n '${changed_mysql}' ] && systemctl is-enabled --quiet mysql; then sudo systemctl restart mysql; fi
       if [ -n '${changed_pdns}' ] && systemctl is-enabled --quiet pdns; then sudo systemctl restart pdns; fi
       # listen のオプション(backlog / reuseport)は reload では反映されないので restart する
-      if [ -n '${changed_nginx}' ] && systemctl is-enabled --quiet nginx; then sudo nginx -t -q && sudo systemctl restart nginx; fi
+      if [ -n '${changed_nginx}' ] && systemctl is-enabled --quiet nginx; then
+        if sudo nginx -t -q 2>/dev/null; then sudo systemctl restart nginx; else echo '!! nginx -t failed:'; sudo nginx -t 2>&1 | grep -v 'syntax is ok'; exit 1; fi
+      fi
       systemctl is-enabled --quiet isupipe-go 2>/dev/null && sudo systemctl restart isupipe-go
       sleep 1
       printf '    [%s] ' '$HOST'
