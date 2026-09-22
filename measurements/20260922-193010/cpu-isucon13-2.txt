@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+mysqld                        49.1
+landscape-sysin                0.7
+pidstat                        0.3
+vmstat                         0.0
+systemd-journal                0.0
+sshd                           0.0
+rsyslogd                       0.0
+kworker/u4:2-writeback         0.0
+kworker/u4:1-writeback         0.0
+kworker/u4:0-writeback         0.0
+kworker/u4:0-ext4-rsv-conversion       0.0
+kworker/0:0-events             0.0
+ksoftirqd/0                    0.0
+jbd2/nvme0n1p1-8               0.0
+irqbalance                     0.0
