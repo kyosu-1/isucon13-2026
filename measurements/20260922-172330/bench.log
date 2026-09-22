@@ -1,3 +1,0 @@
-rm: cannot remove '/tmp/result.json': Operation not permitted
-rm: cannot remove '/tmp/staff.log': Operation not permitted
-rm: cannot remove '/tmp/contestant.log': Operation not permitted

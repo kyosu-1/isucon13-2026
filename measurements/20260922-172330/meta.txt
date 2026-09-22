@@ -1,8 +1,0 @@
-timestamp : 20260922-172330
-commit    : d964bf0  tooling: Makefile / tools（isucon14-2026 から移植）、nginx を LTSV ログに、素のベースライン計測
-entry     : isucon13-1 (10.100.0.155)
-app_hosts : isucon13-1 isucon13-2 isucon13-3
-db_host   : isucon13-1
-bench     : isucon13-4 (10.100.0.186)
-note      : ベースライン（計測ON）
-dirty     : 0 files uncommitted (webapp/ etc/)

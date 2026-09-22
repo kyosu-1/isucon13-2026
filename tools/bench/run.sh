@@ -83,7 +83,7 @@ fi
 
 echo "==> [3/5] ベンチ実行 -> nameserver $TARGET_IP (webapp:$WEBAPP_FLAGS)"
 set +e
-ssh "$BENCH" "cd /home/isucon && rm -f /tmp/result.json /tmp/staff.log /tmp/contestant.log && sudo -u isucon ./bench run --enable-ssl \
+ssh "$BENCH" "cd /home/isucon && sudo rm -f /tmp/result.json /tmp/staff.log /tmp/contestant.log && sudo -u isucon ./bench run --enable-ssl \
   --nameserver $TARGET_IP $WEBAPP_FLAGS --target https://pipe.u.isucon.local \
   --result-path /tmp/result.json --staff-log-path /tmp/staff.log --contestant-log-path /tmp/contestant.log" \
   > "$OUT/bench.log" 2>&1
