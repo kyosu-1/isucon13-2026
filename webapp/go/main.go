@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"sync"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -117,6 +118,7 @@ func initializeHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to initialize: "+err.Error())
 	}
 
+	sessionMemo = sync.Map{}
 	if err := clearIconFiles(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to clear icons: "+err.Error())
 	}

@@ -503,3 +503,16 @@ func clearIconFiles() error {
 	}
 	return os.MkdirAll(iconDir, 0o755)
 }
+
+// ---- セッション Cookie のデコード結果のメモ ----
+//
+// gorilla/sessions の CookieStore は毎リクエスト HMAC 検証 + base64 + gob デコード（pprof で gob が 8%）。
+// Cookie の値はログインまで変わらないので、値 → 中身 をメモしておく。値そのものが鍵なので改竄は効かない。
+
+type sessionInfo struct {
+	UserID   int64
+	Username string
+	Expires  int64
+}
+
+var sessionMemo sync.Map // string(cookie value) -> *sessionInfo

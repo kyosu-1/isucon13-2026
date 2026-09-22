@@ -111,10 +111,7 @@ func postIconHandler(c echo.Context) error {
 		return err
 	}
 
-	// error already checked
-	sess, _ := session.Get(defaultSessionIDKey, c)
-	// existence already checked
-	userID := sess.Values[defaultUserIDKey].(int64)
+	userID := sessionUserID(c)
 
 	var req *PostIconRequest
 	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
@@ -141,10 +138,7 @@ func getMeHandler(c echo.Context) error {
 		return err
 	}
 
-	// error already checked
-	sess, _ := session.Get(defaultSessionIDKey, c)
-	// existence already checked
-	userID := sess.Values[defaultUserIDKey].(int64)
+	userID := sessionUserID(c)
 
 	// 読み取りだけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
 	tx := dbConn
@@ -326,28 +320,57 @@ func getUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-func verifyUserSession(c echo.Context) error {
+// Cookie からセッションを取る（メモがあればデコードしない）。無効なら echo.HTTPError
+func getSessionInfo(c echo.Context) (*sessionInfo, error) {
+	var raw string
+	if ck, err := c.Request().Cookie(defaultSessionIDKey); err == nil {
+		raw = ck.Value
+		if v, ok := sessionMemo.Load(raw); ok {
+			return v.(*sessionInfo), nil
+		}
+	}
+
 	sess, err := session.Get(defaultSessionIDKey, c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusUnauthorized, "failed to get session")
+		return nil, echo.NewHTTPError(http.StatusUnauthorized, "failed to get session")
 	}
 
 	sessionExpires, ok := sess.Values[defaultSessionExpiresKey]
 	if !ok {
-		return echo.NewHTTPError(http.StatusForbidden, "failed to get EXPIRES value from session")
+		return nil, echo.NewHTTPError(http.StatusForbidden, "failed to get EXPIRES value from session")
 	}
 
-	_, ok = sess.Values[defaultUserIDKey].(int64)
+	userID, ok := sess.Values[defaultUserIDKey].(int64)
 	if !ok {
-		return echo.NewHTTPError(http.StatusUnauthorized, "failed to get USERID value from session")
+		return nil, echo.NewHTTPError(http.StatusUnauthorized, "failed to get USERID value from session")
 	}
+	username, _ := sess.Values[defaultUsernameKey].(string)
 
-	now := time.Now()
-	if now.Unix() > sessionExpires.(int64) {
+	info := &sessionInfo{UserID: userID, Username: username, Expires: sessionExpires.(int64)}
+	if raw != "" {
+		sessionMemo.Store(raw, info)
+	}
+	return info, nil
+}
+
+func verifyUserSession(c echo.Context) error {
+	info, err := getSessionInfo(c)
+	if err != nil {
+		return err
+	}
+	if time.Now().Unix() > info.Expires {
 		return echo.NewHTTPError(http.StatusUnauthorized, "session has expired")
 	}
-
 	return nil
+}
+
+// verifyUserSession 済みのハンドラで使う
+func sessionUserID(c echo.Context) int64 {
+	info, err := getSessionInfo(c)
+	if err != nil {
+		return 0
+	}
+	return info.UserID
 }
 
 func fillUserResponse(ctx context.Context, tx sqlx.QueryerContext, userModel UserModel) (User, error) {
