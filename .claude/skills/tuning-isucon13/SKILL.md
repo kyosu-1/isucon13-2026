@@ -83,8 +83,10 @@ DB を別ノードに出したら init.sh の接続先も変わる（env.sh 経�
 - ミドルウェアを再起動したらアプリも再起動する。`make deploy` がやる。
 - MySQL を別ノードに出すときは `tools/setup/mysql-remote-users.sh`（AMI のユーザーは localhost 限定）。
   `isupipe-go.service` の `Requires=mysql.service` は外してある（mysql の無いノードで起動できない）。
-- 現在の構成: **isu1 = アプリ(:8080) + アプリ内 DNS(:53) / isu2 = MySQL / isu3 = nginx**。
-  DNS の A レコードは isu3 を指す（`etc/isu1/home/env.sh` の `__ISU3_IP__`）。ベンチの `--nameserver` は isu1（`DNS_HOST`）。
+- 現在の構成: **isu1 = アプリ(:8080) + アプリ内 DNS(:53) + nginx / isu2 = MySQL + nginx / isu3 = nginx（pipe 宛）**。
+  DNS の A レコード: pipe 等は `ISUCON13_POWERDNS_SUBDOMAIN_ADDRESS`（isu3）、配信者サブドメインは
+  `ISUCON13_DNS_USER_ADDRESS`（isu2,isu3 を名前のハッシュで）。ベンチの `--nameserver` は isu1（`DNS_HOST`）。
+  nginx は GET icon を `proxy_cache`（1 秒）で持ち、If-None-Match の 304 を app に渡さない。
 - アプリはメモリに状態を持つので **1 プロセスだけ**（users / tags / livestreams / scores / ng_words / sessions / icons）。
   すべて起動時と initialize で DB（アイコンはローカルファイル）から作り直す。
 
@@ -105,7 +107,12 @@ DB を別ノードに出したら init.sh の接続先も変わる（env.sh 経�
 | `expected:400 actual:201`（モデレート済みスパム）は 130〜180 件/回 | その配信の最初の moderate より前に来る。マニュアルで減点対象外 | journal 18:40 |
 | スコア ≒ 195 × 完了した視聴者数 | 視聴者の投入はベンチのペース。1 リクエストの遅延を下げるしかない | scores/log.md |
 | トラフィックの 69% は `pipe.u.isucon.local` 宛（GET icon 270k、全部 304） | nginx を DNS で 2 台に分けても pipe が偏る | journal 18:55 |
-| 同一コードのブレは ±3% | 3% 以下の差は判断材料にしない | 20260922-183824 / 184029 |
+| 同一コードのブレは ±3%、さらに 64万/70万 の 2峰性 | 10% 以下の差は 2 回回してから判断 | scores/log.md 18:56〜 |
+| ベンチは名前解決先のとおりには来ない（接続を使い回す） | nginx の分散は DNS の重みで決まらない。access log で実測 | journal 19:27 |
+| pipe 宛（全体の 7 割）を MySQL のノードに向けると DB が遅くなり -26% | pipe は app/DB の無いノードへ | 20260922-193619 |
+| ベンチは Cache-Control を見ない | icon の往復は減らせない（nginx の 304 で app を守るだけ） | 20260922-195228 |
+| NG ワードを配信者単位で判定しても `expected:400 actual:201` は減らない | ベンチ側の問題。触らない | 20260922-194848 |
+| ベンチ機（8 vCPU）が負荷後半に busy 73% | これ以上はベンチ側で頭打ちになりうる | journal 19:56 |
 
 ## ベンチマーカーはブラックボックス
 
