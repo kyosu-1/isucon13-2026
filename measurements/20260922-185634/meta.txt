@@ -1,0 +1,9 @@
+timestamp : 20260922-185634
+commit    : 5e00304  再起動試験: アプリは DB 接続を 60 秒リトライ、試験スクリプトは API の応答を待ってからベンチ
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : 再起動試験後
+dirty     : 0 files uncommitted (webapp/ etc/)
