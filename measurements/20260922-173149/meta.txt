@@ -1,0 +1,8 @@
+timestamp : 20260922-173149
+commit    : 26e2997  DB接続: interpolateParams / MaxOpenConns 64、echo のデバッグ・リクエストログを止める
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : DB接続設定・ログ停止
+dirty     : 0 files uncommitted (webapp/ etc/)
