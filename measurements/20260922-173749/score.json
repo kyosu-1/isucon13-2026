@@ -1,0 +1,78 @@
+{
+  "pass": true,
+  "score": 11130,
+  "error_count": 6,
+  "errors": [
+    {
+      "count": 4,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/statistics: Get \"https://pipe.u.isucon.local:N/api/user/<name>/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 2,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[リクエストタイムアウト] GET /api/user/maiokamoto0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/maiokamoto0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] GET /api/user/mikimatsuda0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/mikimatsuda0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] GET /api/user/kazuya580/statistics: Get \"https://pipe.u.isucon.local:443/api/user/kazuya580/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] GET /api/user/kazuyasato0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/kazuyasato0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[一般エラー] POST /api/livestream/7543/livecomment/1194/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 37,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 39,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 171,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 107,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 52,
+      "fail": 2
+    },
+    "viewer-spam": {
+      "success": 39,
+      "fail": 0
+    },
+    "viewer": {
+      "success": 52,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 2
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 5753,
+    "failed": 0
+  },
+  "viewers_completed": 52,
+  "phases": {
+    "initialize_sec": 2.6,
+    "pretest_sec": 19.1,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 5753",
+    "売上: 11130"
+  ],
+  "dns_resolved": 5753,
+  "scenario_success": 497,
+  "scenario_fail": 6
+}

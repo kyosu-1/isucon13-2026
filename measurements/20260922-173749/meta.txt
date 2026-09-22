@@ -1,0 +1,8 @@
+timestamp : 20260922-173749
+commit    : 519a48e  MySQL: binlog 停止、flush_log_at_trx_commit=2、buffer_pool 1G、max_connections 1024
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : MySQL 設定
+dirty     : 0 files uncommitted (webapp/ etc/)

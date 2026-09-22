@@ -14,3 +14,4 @@
 | 09-22 17:31 | 7288 | +127.0% | ok | 6 | 12216/5 | 34 | 15.8 | インデックス追加（isupipe 13本 + isudns.records(name,type)） | `1c935fb` | 20260922-172908 | インデックス追加 |
 | 09-22 17:33 | 11202 | +53.7% | ok | 3 | 8304/0 | 54 | 15.3 | DB接続: interpolateParams / MaxOpenConns 64、echo のデバッグ・リクエストログを止める | `26e2997` | 20260922-173149 | DB接続設定・ログ停止 |
 | 09-22 17:37 | 11235 | +0.3% | ok | 1 | 8019/1 | 54 | 15.5 | POST /api/icon: DELETE+INSERT を UNIQUE(user_id) の upsert に（デッドロックで 500 が 24 件） | `9f79cc1` | 20260922-173522 | icon upsert（デッドロック修正） |
+| 09-22 17:39 | 11130 | -0.9% | ok | 6 | 5753/0 | 52 | 2.6 | MySQL: binlog 停止、flush_log_at_trx_commit=2、buffer_pool 1G、max_connections 1024 | `519a48e` | 20260922-173749 | MySQL 設定 |

@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+vmstat                         0.0
+systemd-network                0.0
+rcu_sched                      0.0
+multipathd                     0.0
+kworker/u4:0-events_unbound       0.0
+jbd2/nvme0n1p1-8               0.0
