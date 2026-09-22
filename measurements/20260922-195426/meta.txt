@@ -1,0 +1,9 @@
+timestamp : 20260922-195426
+commit    : a29e2eb  Revert "実験: GET icon に Cache-Control: max-age=1（nginx のキャッシュは 0.5 秒に）"
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 計測OFF（slow log なし）
+dirty     : 0 files uncommitted (webapp/ etc/)
