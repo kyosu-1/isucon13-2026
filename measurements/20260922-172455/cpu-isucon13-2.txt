@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.4
+vmstat                         0.0
+systemd-journal                0.0
+multipathd                     0.0
+kworker/1:1-events             0.0
+ksoftirqd/1                    0.0
+jbd2/nvme0n1p1-8               0.0

@@ -1,0 +1,102 @@
+{
+  "pass": true,
+  "score": 3211,
+  "error_count": 7,
+  "errors": [
+    {
+      "count": 3,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/statistics: Get \"https://pipe.u.isucon.local:N/api/user/<name>/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/icon: Post \"https://pipe.u.isucon.local:N/api/icon\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/reservation: Post \"https://maayaN.u.isucon.local:N/api/livestream/reservation\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/livecomment: Post \"https://satomikobayashiN.u.isucon.local:N/api/livestream/N/livecomment\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[リクエストタイムアウト] GET /api/user/maiokamoto0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/maiokamoto0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] GET /api/user/yuitakahashi0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/yuitakahashi0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] GET /api/user/yamazakikyosuke0/statistics: Get \"https://pipe.u.isucon.local:443/api/user/yamazakikyosuke0/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] POST /api/icon: Post \"https://pipe.u.isucon.local:443/api/icon\": read udp 10.100.0.186:11554->10.100.0.155:53: i/o timeout: タイムアウトによりリクエスト失敗",
+    "[リクエストタイムアウト] POST /api/livestream/reservation: Post \"https://maaya520.u.isucon.local:443/api/livestream/reservation\": read udp 10.100.0.186:16166->10.100.0.155:53: i/o timeout: タイムアウトによりリクエスト失敗"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 42,
+      "fail": 1
+    },
+    "dns-watertorture-attack": {
+      "success": 18,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 62,
+      "fail": 1
+    },
+    "streamer-moderate": {
+      "success": 24,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 42,
+      "fail": 1
+    },
+    "viewer-spam": {
+      "success": 43,
+      "fail": 1
+    },
+    "viewer": {
+      "success": 11,
+      "fail": 5
+    },
+    "aggressive-streamer-moderate-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 5
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 1
+    }
+  },
+  "dns": {
+    "attackers": 2,
+    "resolved": 2632,
+    "failed": 3
+  },
+  "viewers_completed": 11,
+  "phases": {
+    "initialize_sec": 15.2,
+    "pretest_sec": 33.2,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 2632",
+    "売上: 3211"
+  ],
+  "dns_resolved": 2632,
+  "scenario_success": 242,
+  "scenario_fail": 18
+}
