@@ -237,3 +237,53 @@ func (tc *tagCache) setLivestreamTags(livestreamID int64, tagIDs []int64) {
 	}
 	tc.byLivestream[livestreamID] = ts
 }
+
+// ---- 配信（作成後は不変） ----
+
+type livestreamCache struct {
+	mu   sync.RWMutex
+	byID map[int64]*LivestreamModel
+}
+
+var livestreams = &livestreamCache{byID: map[int64]*LivestreamModel{}}
+
+func (lc *livestreamCache) reload(ctx context.Context, db *sqlx.DB) error {
+	var models []LivestreamModel
+	if err := db.SelectContext(ctx, &models, "SELECT * FROM livestreams"); err != nil {
+		return err
+	}
+	byID := make(map[int64]*LivestreamModel, len(models))
+	for i := range models {
+		byID[models[i].ID] = &models[i]
+	}
+	lc.mu.Lock()
+	lc.byID = byID
+	lc.mu.Unlock()
+	return nil
+}
+
+func (lc *livestreamCache) get(id int64) (*LivestreamModel, bool) {
+	lc.mu.RLock()
+	defer lc.mu.RUnlock()
+	m, ok := lc.byID[id]
+	return m, ok
+}
+
+// 配信作成（DB コミット後に呼ぶ）
+func (lc *livestreamCache) add(m LivestreamModel) {
+	lc.mu.Lock()
+	lc.byID[m.ID] = &m
+	lc.mu.Unlock()
+}
+
+// id から配信を引く（キャッシュに無ければ DB。無ければ sql.ErrNoRows）
+func livestreamByID(ctx context.Context, tx *sqlx.Tx, id int64) (LivestreamModel, error) {
+	if m, ok := livestreams.get(id); ok {
+		return *m, nil
+	}
+	var m LivestreamModel
+	if err := tx.GetContext(ctx, &m, "SELECT * FROM livestreams WHERE id = ?", id); err != nil {
+		return LivestreamModel{}, err
+	}
+	return m, nil
+}

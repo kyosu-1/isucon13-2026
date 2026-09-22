@@ -162,6 +162,7 @@ func reserveLivestreamHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 	tags.setLivestreamTags(livestreamID, req.Tags)
+	livestreams.add(*livestreamModel)
 
 	livestream, err := fillLivestreamResponse(ctx, tx, *livestreamModel)
 	if err != nil {
