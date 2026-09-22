@@ -60,7 +60,11 @@ SUBJECT="$(git log -1 --format=%s 2>/dev/null || echo '-')"
 
 echo "==> [1/5] ログ初期化・リソース記録開始"
 START_EPOCH="$(date +%s)"
-ssh "$ENTRY" "sudo truncate -s 0 /var/log/nginx/access.log /var/log/nginx/error.log"
+# nginx は複数ノードで動きうるので全ノードのログを消す（alp は ENTRY のものだけ集計する）
+for h in "${APP_HOSTS_ARR[@]}"; do
+  ssh "$h" "sudo truncate -s 0 /var/log/nginx/access.log /var/log/nginx/error.log 2>/dev/null || true" &
+done
+wait
 ssh "$DB_HOST" "sudo truncate -s 0 /var/log/mysql/slow.log 2>/dev/null || true"
 ./tools/analyze/mysql-status.sh "$DB_HOST" snapshot > "$OUT/raw-mysql-status-before.txt" 2>/dev/null || true
 for h in "${APP_HOSTS_ARR[@]}"; do

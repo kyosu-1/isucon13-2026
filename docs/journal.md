@@ -232,3 +232,29 @@ app が `ETag` を返し、isu3 の nginx が `proxy_cache`（有効 1 秒）で
 1回目は `proxy_cache_path /var/cache/nginx/...` の親ディレクトリが無く `nginx -t` が落ちて、
 **deploy が黙って旧設定のまま**動いていた。`deploy.sh` は nginx -t の失敗を表示して止めるようにした。
 スコアは変わらない（icon の往復は律速ではなかった）が、app の負荷は減るので採用。
+
+### 19:25 配信ごとのライブコメント・リアクションをメモリキャッシュ → 532161（+5.8%）
+
+一覧 API（各 27k 回/分、DB 時間の 32%）を DB を見ずに返す。配信ごとに id 昇順で持って後ろから limit 件。
+手動確認: limit・順序（新しい順）・モデレーションでの除去・統計（total_reactions）。
+
+### 19:27 nginx を isu1 にも置き、配信者サブドメインを isu1 へ → 622357（+17%）
+
+isu3 の nginx が 142%（busy 83%）で最も重かった。アプリ内 DNS で A レコードを名前ごとに分ける
+（`ISUCON13_DNS_USER_ADDRESS`）。isu1 の nginx は同じノードの :8080 へ。
+access log を見ると、**ベンチは名前解決どおりには来ない**（接続を使い回す）: isu1 に pipe 宛 11.7 万が来る。
+
+### 19:30〜19:39 nginx の分散の探索
+
+| 構成 | スコア | 負荷 |
+| --- | ---: | --- |
+| ユーザー名→isu1、pipe→isu3 | 622357 | isu1 93% / isu3 53% |
+| ユーザー名 isu1:isu3 = 1:2 | 584526 | isu1 70% / isu3 79% |
+| ユーザー名 1:1 | 615757 | isu1 81% / isu3 79% |
+| **nginx を isu2（MySQL 同居）にも置き 1:1:1、pipe→isu3** | **658757** | isu1 75% / isu2 50% / isu3 68% |
+| 初期ユーザー名も分散、pipe→isu2 | 486016 | isu2 が 87% で飽和して DB が遅くなった |
+| pipe→isu3、ユーザー名 1:2:2（採用） | 647161 | isu1 70% / isu2 52% / isu3 73% |
+
+pipe（全リクエストの 7 割）は app / DB の無い isu3 に置くのが正解。ユーザー名の重みはブレの範囲。
+現在の構成: **isu1 = app + DNS + nginx / isu2 = MySQL + nginx / isu3 = nginx（pipe）**。
+ベンチ機（8 vCPU）が busy 63% まで上がってきた。
