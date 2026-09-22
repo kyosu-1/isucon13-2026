@@ -1,0 +1,90 @@
+{
+  "pass": true,
+  "score": 3545,
+  "error_count": 7,
+  "errors": [
+    {
+      "count": 4,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 3,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/statistics: Get \"https://pipe.u.isucon.local:N/api/user/<name>/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7528/livecomment/1040/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7528/livecomment/1041/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7522/livecomment/1012/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7522/livecomment/1013/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[リクエストタイムアウト] GET /api/user/mtanaka1/statistics: Get \"https://pipe.u.isucon.local:443/api/user/mtanaka1/statistics\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 29,
+      "fail": 2
+    },
+    "dns-watertorture-attack": {
+      "success": 16,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 55,
+      "fail": 1
+    },
+    "streamer-moderate": {
+      "success": 23,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 37,
+      "fail": 7
+    },
+    "viewer-spam": {
+      "success": 30,
+      "fail": 1
+    },
+    "viewer": {
+      "success": 14,
+      "fail": 7
+    },
+    "aggressive-streamer-moderate-fail": {
+      "success": 0,
+      "fail": 2
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 7
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 7
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 1
+    }
+  },
+  "dns": {
+    "attackers": 2,
+    "resolved": 2311,
+    "failed": 0
+  },
+  "viewers_completed": 14,
+  "phases": {
+    "initialize_sec": 14.9,
+    "pretest_sec": 33.2,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 2311",
+    "売上: 3545"
+  ],
+  "dns_resolved": 2311,
+  "scenario_success": 204,
+  "scenario_fail": 36
+}
