@@ -1,0 +1,12 @@
+COMMAND                   AVG_CPU%
+mysqld                        55.3
+landscape-sysin                0.6
+pidstat                        0.4
+jbd2/nvme0n1p1-8               0.1
+systemd                        0.0
+sshd                           0.0
+rcu_sched                      0.0
+kworker/u4:3-events_unbound       0.0
+kworker/u4:2-flush-259:0       0.0
+kworker/u4:1-events_unbound       0.0
+cron                           0.0

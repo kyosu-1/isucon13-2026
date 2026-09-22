@@ -1,0 +1,9 @@
+timestamp : 20260922-184352
+commit    : 5d5567d  nginx(isu3): HTTP/2 を有効化（*.u.isucon.local の server ブロック）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : nginx http2
+dirty     : 0 files uncommitted (webapp/ etc/)
