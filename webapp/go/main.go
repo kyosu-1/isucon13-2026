@@ -4,6 +4,7 @@ package main
 // sqlx的な参考: https://jmoiron.github.io/sqlx/
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -115,6 +116,10 @@ func initializeHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to initialize: "+err.Error())
 	}
 
+	if err := users.reload(c.Request().Context(), dbConn); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload cache: "+err.Error())
+	}
+
 	c.Request().Header.Add("Content-Type", "application/json;charset=utf-8")
 	return c.JSON(http.StatusOK, InitializeResponse{
 		Language: "golang",
@@ -201,6 +206,15 @@ func main() {
 		os.Exit(1)
 	}
 	powerDNSSubdomainAddress = subdomainAddr
+
+	if err := loadFallbackImage(); err != nil {
+		e.Logger.Errorf("failed to load fallback image: %v", err)
+		os.Exit(1)
+	}
+	if err := users.reload(context.Background(), dbConn); err != nil {
+		e.Logger.Errorf("failed to load user cache: %v", err)
+		os.Exit(1)
+	}
 
 	// HTTPサーバ起動
 	listenAddr := net.JoinHostPort("", strconv.Itoa(listenPort))
