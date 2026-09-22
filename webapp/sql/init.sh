@@ -20,6 +20,18 @@ mysql -u"$ISUCON_DB_USER" \
 		--port "$ISUCON_DB_PORT" \
 		"$ISUCON_DB_NAME" < init.sql
 
+# 追加インデックス（既にあれば Duplicate key name を無視して続ける）
+mysql -f -u"$ISUCON_DB_USER" \
+		-p"$ISUCON_DB_PASSWORD" \
+		--host "$ISUCON_DB_HOST" \
+		--port "$ISUCON_DB_PORT" \
+		"$ISUCON_DB_NAME" < indexes.sql 2>&1 | grep -v "Duplicate key name" || true
+mysql -f -u"isudns" \
+		-p"isudns" \
+		--host "$ISUCON_DB_HOST" \
+		--port "$ISUCON_DB_PORT" \
+		"isudns" < indexes_dns.sql 2>&1 | grep -v "Duplicate key name" || true
+
 mysql -u"$ISUCON_DB_USER" \
 		-p"$ISUCON_DB_PASSWORD" \
 		--host "$ISUCON_DB_HOST" \
