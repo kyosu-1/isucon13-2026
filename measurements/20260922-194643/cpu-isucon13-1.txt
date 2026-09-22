@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+isupipe                      108.7
+nginx                         15.8
+systemd-journal                1.4
+rsyslogd                       0.6
+pidstat                        0.4
+systemd-timedat                0.1
+rcu_sched                      0.1
+kworker/u4:3-events_power_efficient       0.1
+kworker/u4:0-ext4-rsv-conversion       0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+vmstat                         0.0
+systemd                        0.0
+polkitd                        0.0
+mysql                          0.0

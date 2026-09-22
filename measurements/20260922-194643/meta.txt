@@ -1,0 +1,9 @@
+timestamp : 20260922-194643
+commit    : 0d135c9  JSON: HTML エスケープを無効化（< > & をそのまま出す。JSON としては同値）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : JSON HTML エスケープ無効化
+dirty     : 0 files uncommitted (webapp/ etc/)
