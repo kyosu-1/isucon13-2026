@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+landscape-sysin                0.1
+systemd-journal                0.0
+kworker/u4:1-writeback         0.0
+kworker/0:2-events             0.0
+dbus-daemon                    0.0

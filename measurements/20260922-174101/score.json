@@ -1,0 +1,76 @@
+{
+  "pass": true,
+  "score": 15546,
+  "error_count": 3,
+  "errors": [
+    {
+      "count": 2,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/icon: Get \"https://pipe.u.isucon.local:N/api/user/<name>/icon\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7522/livecomment/1012/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7522/livecomment/1013/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[リクエストタイムアウト] GET /api/user/rmori2/icon: Get \"https://pipe.u.isucon.local:443/api/user/rmori2/icon\": read udp 10.100.0.186:46640->10.100.0.155:53: i/o timeout: タイムアウトによりリクエスト失敗"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 26,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 43,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 173,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 66,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 49,
+      "fail": 5
+    },
+    "viewer-spam": {
+      "success": 26,
+      "fail": 0
+    },
+    "viewer": {
+      "success": 76,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 5
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 6057,
+    "failed": 1
+  },
+  "viewers_completed": 76,
+  "phases": {
+    "initialize_sec": 2.6,
+    "pretest_sec": 6.5,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 6057",
+    "売上: 15546"
+  ],
+  "dns_resolved": 6057,
+  "scenario_success": 459,
+  "scenario_fail": 12
+}

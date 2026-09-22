@@ -1,0 +1,8 @@
+timestamp : 20260922-174101
+commit    : a0d8ac6  statistics: ランキング計算の N+1（全ユーザー/全配信 × 2クエリ）を集約クエリ1本に
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : statistics N+1 解消
+dirty     : 0 files uncommitted (webapp/ etc/)

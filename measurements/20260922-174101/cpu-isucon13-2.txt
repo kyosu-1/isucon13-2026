@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+landscape-sysin                0.1
+systemd                        0.0
+sshd                           0.0
+irqbalance                     0.0
+dbus-daemon                    0.0
+chronyd                        0.0
