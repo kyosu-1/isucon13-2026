@@ -32,7 +32,8 @@ const (
 
 var (
 	dnsStaticNames = map[string]struct{}{} // ゾーンファイル由来の名前（apex は ""）
-	dnsAddr        net.IP
+	dnsAddr        net.IP                  // ゾーンファイル由来の名前（pipe など）に返す IP
+	dnsUserAddr    net.IP                  // 配信者サブドメイン（登録ユーザー名）に返す IP。未設定なら dnsAddr
 	dnsSOA         *dns.SOA
 	dnsMu          sync.RWMutex
 )
@@ -108,9 +109,17 @@ func handleDNS(w dns.ResponseWriter, r *dns.Msg) {
 
 	switch q.Qtype {
 	case dns.TypeA, dns.TypeANY:
+		// 静的な名前（pipe 等）は dnsAddr、配信者サブドメインは dnsUserAddr（nginx を 2 台に分けるため）
+		addr := dnsAddr
+		dnsMu.RLock()
+		_, static := dnsStaticNames[sub]
+		dnsMu.RUnlock()
+		if !static && dnsUserAddr != nil {
+			addr = dnsUserAddr
+		}
 		m.Answer = []dns.RR{&dns.A{
 			Hdr: dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: dnsTTL},
-			A:   dnsAddr,
+			A:   addr,
 		}}
 	case dns.TypeSOA:
 		if sub == "" {
@@ -139,6 +148,12 @@ func startDNSServer(addr string) error {
 	dnsAddr = net.ParseIP(addr).To4()
 	if dnsAddr == nil {
 		return fmt.Errorf("invalid DNS answer address: %q", addr)
+	}
+	if v, ok := os.LookupEnv("ISUCON13_DNS_USER_ADDRESS"); ok && v != "" {
+		dnsUserAddr = net.ParseIP(v).To4()
+		if dnsUserAddr == nil {
+			return fmt.Errorf("invalid ISUCON13_DNS_USER_ADDRESS: %q", v)
+		}
 	}
 	if err := loadDNSZone(dnsZoneFile); err != nil {
 		return fmt.Errorf("load zone file: %w", err)
