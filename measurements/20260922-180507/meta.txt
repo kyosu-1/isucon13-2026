@@ -1,0 +1,8 @@
+timestamp : 20260922-180507
+commit    : eb5f4f4  DNS: ユーザー名の大文字小文字を無視して引く（'wkGQKEWut2' が NXDOMAIN で整合性チェック失敗）
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : アプリ内 DNS（大文字対応）
+dirty     : 0 files uncommitted (webapp/ etc/)

@@ -1,0 +1,6 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.6
+vmstat                         0.0
+systemd-udevd                  0.0
+rcu_sched                      0.0
+dbus-daemon                    0.0
