@@ -84,6 +84,12 @@ if [ -z "$dns" ]; then
 fi
 
 echo "==> [3/5] ベンチ実行 -> nameserver $TARGET_IP (webapp:$WEBAPP_FLAGS)"
+# PPROF_HOST=isucon13-1 make bench なら、負荷走行の途中（開始 55 秒後）から 30 秒の CPU プロファイルを取る
+PPROF_PID=""
+if [ -n "${PPROF_HOST:-}" ]; then
+  ( sleep 55; ./tools/analyze/pprof.sh "$PPROF_HOST" 30 "$OUT/cpu.pprof" > "$OUT/pprof.txt" 2>&1 ) &
+  PPROF_PID=$!
+fi
 set +e
 ssh "$BENCH" "cd /home/isucon && sudo rm -f /tmp/result.json /tmp/staff.log /tmp/contestant.log && sudo -u isucon ./bench run --enable-ssl \
   --nameserver $TARGET_IP $WEBAPP_FLAGS --target https://pipe.u.isucon.local \
@@ -94,6 +100,8 @@ set -e
 scp -q "$BENCH:/tmp/result.json" "$OUT/result.json" 2>/dev/null || echo '{}' > "$OUT/result.json"
 scp -q "$BENCH:/tmp/contestant.log" "$OUT/contestant.log" 2>/dev/null || true
 python3 tools/bench/parse.py "$OUT" > "$OUT/score.json"
+
+[ -n "$PPROF_PID" ] && wait "$PPROF_PID" || true
 
 echo "==> [4/5] 解析"
 for h in "${APP_HOSTS_ARR[@]}"; do
