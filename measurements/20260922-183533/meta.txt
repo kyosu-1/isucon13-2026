@@ -1,0 +1,9 @@
+timestamp : 20260922-183533
+commit    : 0efdb96  nginx(isu3): worker_rlimit_nofile 65536
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : nginx rlimit 修正
+dirty     : 0 files uncommitted (webapp/ etc/)
