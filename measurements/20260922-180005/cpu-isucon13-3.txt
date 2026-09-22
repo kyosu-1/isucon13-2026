@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+vmstat                         0.0
+systemd-udevd                  0.0
+systemd-journal                0.0
+ksoftirqd/1                    0.0
+jbd2/nvme0n1p1-8               0.0

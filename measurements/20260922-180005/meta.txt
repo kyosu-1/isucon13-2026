@@ -1,0 +1,8 @@
+timestamp : 20260922-180005
+commit    : a4933e1  DB分離の続き: MySQL のリモート接続ユーザー作成スクリプト、isupipe-go.service の Requires=mysql を外す
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : MySQL を isu2 に分離
+dirty     : 0 files uncommitted (webapp/ etc/)

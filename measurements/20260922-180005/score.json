@@ -1,0 +1,86 @@
+{
+  "pass": true,
+  "score": 149875,
+  "error_count": 30,
+  "errors": [
+    {
+      "count": 25,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 4,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/livecomment: Post \"https://yoichiendoN.u.isucon.local:N/api/livestream/N/livecomment\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[リクエストタイムアウト] POST /api/livestream/7761/livecomment: Post \"https://yoichiendo1.u.isucon.local:443/api/livestream/7761/livecomment\": read udp 10.100.0.186:61870->10.100.0.155:53: i/o timeout: タイムアウトによりリクエスト失敗",
+    "[一般エラー] POST /api/livestream/7552/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7524/livecomment/1027/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7608/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7560/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 817,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 216,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 739,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 502,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 53,
+      "fail": 4
+    },
+    "viewer-spam": {
+      "success": 791,
+      "fail": 27
+    },
+    "viewer": {
+      "success": 758,
+      "fail": 3
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 3
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 4
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 27
+    }
+  },
+  "dns": {
+    "attackers": 13,
+    "resolved": 26822,
+    "failed": 1
+  },
+  "viewers_completed": 758,
+  "phases": {
+    "initialize_sec": 3.1,
+    "pretest_sec": 5.4,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 26822",
+    "売上: 149875"
+  ],
+  "dns_resolved": 26822,
+  "scenario_success": 3876,
+  "scenario_fail": 68
+}

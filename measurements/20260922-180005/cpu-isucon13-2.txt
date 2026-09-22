@@ -1,0 +1,14 @@
+COMMAND                   AVG_CPU%
+mysqld                       134.5
+pidstat                        0.4
+jbd2/nvme0n1p1-8               0.1
+vmstat                         0.0
+rcu_sched                      0.0
+kworker/u4:3-ext4-rsv-conversion       0.0
+kworker/u4:2-events_unbound       0.0
+kworker/u4:1-ext4-rsv-conversion       0.0
+kworker/1:1-mm_percpu_wq       0.0
+kworker/0:2-events             0.0
+kworker/0:1H-kblockd           0.0
+ksoftirqd/1                    0.0
+ksoftirqd/0                    0.0
