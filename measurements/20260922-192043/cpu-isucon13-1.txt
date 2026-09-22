@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+isupipe                       95.9
+systemd-journal                0.9
+rsyslogd                       0.4
+pidstat                        0.4
+rcu_sched                      0.1
+kworker/u4:3-ext4-rsv-conversion       0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+mysql                          0.0
+multipathd                     0.0
+kworker/u4:3-flush-259:0       0.0
+kworker/u4:2+flush-259:0       0.0
+kworker/u4:2-flush-259:0       0.0
+kworker/u4:2-ext4-rsv-conversion       0.0
+kworker/u4:0-ext4-rsv-conversion       0.0

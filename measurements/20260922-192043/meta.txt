@@ -1,0 +1,9 @@
+timestamp : 20260922-192043
+commit    : 55a32ad  nginx icon キャッシュ: 親ディレクトリの無い /var/cache/nginx で nginx -t が落ちていた（deploy は黙って旧設定のまま）。/var/lib/nginx/icons に。deploy.sh は nginx -t の失敗を表示して止める
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : icon を nginx キャッシュで 304
+dirty     : 0 files uncommitted (webapp/ etc/)
