@@ -1,0 +1,9 @@
+timestamp : 20260922-192728
+commit    : cb12516  nginx を isu1 にも置き、配信者サブドメインの A レコードは isu1、pipe 等は isu3 を指す
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : nginx 2台（配信者サブドメインは isu1）
+dirty     : 0 files uncommitted (webapp/ etc/)
