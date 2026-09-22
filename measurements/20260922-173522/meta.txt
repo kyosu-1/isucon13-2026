@@ -1,0 +1,8 @@
+timestamp : 20260922-173522
+commit    : 9f79cc1  POST /api/icon: DELETE+INSERT を UNIQUE(user_id) の upsert に（デッドロックで 500 が 24 件）
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : icon upsert（デッドロック修正）
+dirty     : 0 files uncommitted (webapp/ etc/)

@@ -1,0 +1,1 @@
+{"pass":true,"score":11235,"messages":["[一般エラー] POST /api/livestream/7527/livecomment/1053/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)","名前解決成功数 8019","売上: 11235"],"language":"golang","resolved_count":8019}

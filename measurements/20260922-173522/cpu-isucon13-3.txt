@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+vmstat                         0.0
+systemd-logind                 0.0
+sshd                           0.0
+rcu_sched                      0.0
+multipathd                     0.0
+irqbalance                     0.0

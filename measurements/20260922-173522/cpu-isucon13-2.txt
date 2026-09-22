@@ -1,0 +1,4 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+multipathd                     0.0
+dbus-daemon                    0.0

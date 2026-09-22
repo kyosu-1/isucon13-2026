@@ -1,0 +1,66 @@
+{
+  "pass": true,
+  "score": 11235,
+  "error_count": 1,
+  "errors": [
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7527/livecomment/1053/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 28,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 63,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 155,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 86,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 51,
+      "fail": 3
+    },
+    "viewer-spam": {
+      "success": 30,
+      "fail": 0
+    },
+    "viewer": {
+      "success": 54,
+      "fail": 0
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 3
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 8019,
+    "failed": 1
+  },
+  "viewers_completed": 54,
+  "phases": {
+    "initialize_sec": 15.5,
+    "pretest_sec": 13.5,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 8019",
+    "売上: 11235"
+  ],
+  "dns_resolved": 8019,
+  "scenario_success": 467,
+  "scenario_fail": 6
+}
