@@ -516,3 +516,131 @@ type sessionInfo struct {
 }
 
 var sessionMemo sync.Map // string(cookie value) -> *sessionInfo
+
+// ---- 配信ごとのライブコメント・リアクション（一覧 API 用） ----
+//
+// GET /api/livestream/:id/livecomment と /reaction が DB 時間の 32%（各 27k 回/分）。
+// どちらも「その配信のものを created_at 降順（同時刻は id 降順）で limit 件」なので、配信ごとに id 昇順で持ち、
+// 後ろから返す。追加は投稿のコミット後、削除はモデレーションのコミット後。起動時と initialize で DB から作り直す。
+
+type livecommentCache struct {
+	mu           sync.RWMutex
+	byLivestream map[int64][]LivecommentModel
+}
+
+type reactionCache struct {
+	mu           sync.RWMutex
+	byLivestream map[int64][]ReactionModel
+}
+
+var (
+	livecomments = &livecommentCache{byLivestream: map[int64][]LivecommentModel{}}
+	reactions    = &reactionCache{byLivestream: map[int64][]ReactionModel{}}
+)
+
+func (lc *livecommentCache) reload(ctx context.Context, db *sqlx.DB) error {
+	var rows []LivecommentModel
+	if err := db.SelectContext(ctx, &rows, "SELECT * FROM livecomments ORDER BY created_at, id"); err != nil {
+		return err
+	}
+	m := make(map[int64][]LivecommentModel)
+	for _, r := range rows {
+		m[r.LivestreamID] = append(m[r.LivestreamID], r)
+	}
+	lc.mu.Lock()
+	lc.byLivestream = m
+	lc.mu.Unlock()
+	return nil
+}
+
+// created_at 降順（同時刻は id 降順）で最大 limit 件（limit<0 なら全件）
+func (lc *livecommentCache) list(livestreamID int64, limit int) []LivecommentModel {
+	lc.mu.RLock()
+	defer lc.mu.RUnlock()
+	all := lc.byLivestream[livestreamID]
+	n := len(all)
+	if limit >= 0 && limit < n {
+		n = limit
+	}
+	out := make([]LivecommentModel, 0, n)
+	for i := len(all) - 1; i >= 0 && len(out) < n; i-- {
+		out = append(out, all[i])
+	}
+	return out
+}
+
+// 投稿（DB コミット後）。created_at は単調増加なので末尾に足す
+func (lc *livecommentCache) add(m LivecommentModel) {
+	lc.mu.Lock()
+	lc.byLivestream[m.LivestreamID] = append(lc.byLivestream[m.LivestreamID], m)
+	lc.mu.Unlock()
+}
+
+// モデレーション（DB コミット後）: 配信内で語を含むコメントを消す。消した tip の合計を返す
+func (lc *livecommentCache) removeMatching(livestreamID int64, words []string) {
+	lc.mu.Lock()
+	defer lc.mu.Unlock()
+	all := lc.byLivestream[livestreamID]
+	kept := all[:0:0]
+	for _, c := range all {
+		hit := false
+		for _, w := range words {
+			if h, ok := likeContains(c.Comment, w); ok && h {
+				hit = true
+				break
+			}
+		}
+		if !hit {
+			kept = append(kept, c)
+		}
+	}
+	lc.byLivestream[livestreamID] = kept
+}
+
+// ワイルドカードを含む語があるときは DB から読み直す
+func (lc *livecommentCache) reloadLivestream(ctx context.Context, db sqlx.QueryerContext, livestreamID int64) error {
+	var rows []LivecommentModel
+	if err := sqlx.SelectContext(ctx, db, &rows, "SELECT * FROM livecomments WHERE livestream_id = ? ORDER BY created_at, id", livestreamID); err != nil {
+		return err
+	}
+	lc.mu.Lock()
+	lc.byLivestream[livestreamID] = rows
+	lc.mu.Unlock()
+	return nil
+}
+
+func (rc *reactionCache) reload(ctx context.Context, db *sqlx.DB) error {
+	var rows []ReactionModel
+	if err := db.SelectContext(ctx, &rows, "SELECT * FROM reactions ORDER BY created_at, id"); err != nil {
+		return err
+	}
+	m := make(map[int64][]ReactionModel)
+	for _, r := range rows {
+		m[r.LivestreamID] = append(m[r.LivestreamID], r)
+	}
+	rc.mu.Lock()
+	rc.byLivestream = m
+	rc.mu.Unlock()
+	return nil
+}
+
+func (rc *reactionCache) list(livestreamID int64, limit int) []ReactionModel {
+	rc.mu.RLock()
+	defer rc.mu.RUnlock()
+	all := rc.byLivestream[livestreamID]
+	n := len(all)
+	if limit >= 0 && limit < n {
+		n = limit
+	}
+	out := make([]ReactionModel, 0, n)
+	for i := len(all) - 1; i >= 0 && len(out) < n; i-- {
+		out = append(out, all[i])
+	}
+	return out
+}
+
+func (rc *reactionCache) add(m ReactionModel) {
+	rc.mu.Lock()
+	rc.byLivestream[m.LivestreamID] = append(rc.byLivestream[m.LivestreamID], m)
+	rc.mu.Unlock()
+}

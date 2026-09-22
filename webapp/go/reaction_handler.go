@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -45,34 +44,28 @@ func getReactionsHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "livestream_id in path must be integer")
 	}
 
-	// 読み取りだけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
-	tx := dbConn
-
-	query := "SELECT * FROM reactions WHERE livestream_id = ? ORDER BY created_at DESC"
+	limit := -1
 	if c.QueryParam("limit") != "" {
-		limit, err := strconv.Atoi(c.QueryParam("limit"))
+		l, err := strconv.Atoi(c.QueryParam("limit"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "limit query parameter must be integer")
 		}
-		query += fmt.Sprintf(" LIMIT %d", limit)
+		limit = l
 	}
+	tx := dbConn
+	reactionModels := reactions.list(int64(livestreamID), limit)
 
-	reactionModels := []ReactionModel{}
-	if err := sqlx.SelectContext(ctx, tx, &reactionModels, query, livestreamID); err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, "failed to get reactions")
-	}
-
-	reactions := make([]Reaction, len(reactionModels))
+	res := make([]Reaction, len(reactionModels))
 	for i := range reactionModels {
 		reaction, err := fillReactionResponse(ctx, tx, reactionModels[i])
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "failed to fill reaction: "+err.Error())
 		}
 
-		reactions[i] = reaction
+		res[i] = reaction
 	}
 
-	return c.JSON(http.StatusOK, reactions)
+	return c.JSON(http.StatusOK, res)
 }
 
 func postReactionHandler(c echo.Context) error {
@@ -121,6 +114,7 @@ func postReactionHandler(c echo.Context) error {
 	}
 
 	scores.add(int64(livestreamID), 1)
+	reactions.add(reactionModel)
 
 	return c.JSON(http.StatusCreated, reaction)
 }

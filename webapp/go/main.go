@@ -138,6 +138,12 @@ func initializeHandler(c echo.Context) error {
 	if err := ngWords.reload(c.Request().Context(), dbConn); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload ng word cache: "+err.Error())
 	}
+	if err := livecomments.reload(c.Request().Context(), dbConn); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload livecomment cache: "+err.Error())
+	}
+	if err := reactions.reload(c.Request().Context(), dbConn); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload reaction cache: "+err.Error())
+	}
 
 	c.Request().Header.Add("Content-Type", "application/json;charset=utf-8")
 	return c.JSON(http.StatusOK, InitializeResponse{
@@ -258,6 +264,14 @@ func main() {
 	}
 	if err := ngWords.reload(context.Background(), dbConn); err != nil {
 		e.Logger.Errorf("failed to load ng word cache: %v", err)
+		os.Exit(1)
+	}
+	if err := livecomments.reload(context.Background(), dbConn); err != nil {
+		e.Logger.Errorf("failed to load livecomment cache: %v", err)
+		os.Exit(1)
+	}
+	if err := reactions.reload(context.Background(), dbConn); err != nil {
+		e.Logger.Errorf("failed to load reaction cache: %v", err)
 		os.Exit(1)
 	}
 

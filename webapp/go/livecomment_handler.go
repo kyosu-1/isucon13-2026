@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -78,38 +78,28 @@ func getLivecommentsHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "livestream_id in path must be integer")
 	}
 
-	// 読み取りだけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
-	tx := dbConn
-
-	query := "SELECT * FROM livecomments WHERE livestream_id = ? ORDER BY created_at DESC"
+	limit := -1
 	if c.QueryParam("limit") != "" {
-		limit, err := strconv.Atoi(c.QueryParam("limit"))
+		l, err := strconv.Atoi(c.QueryParam("limit"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "limit query parameter must be integer")
 		}
-		query += fmt.Sprintf(" LIMIT %d", limit)
+		limit = l
 	}
+	tx := dbConn
+	livecommentModels := livecomments.list(int64(livestreamID), limit)
 
-	livecommentModels := []LivecommentModel{}
-	err = sqlx.SelectContext(ctx, tx, &livecommentModels, query, livestreamID)
-	if errors.Is(err, sql.ErrNoRows) {
-		return c.JSON(http.StatusOK, []*Livecomment{})
-	}
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get livecomments: "+err.Error())
-	}
-
-	livecomments := make([]Livecomment, len(livecommentModels))
+	res := make([]Livecomment, len(livecommentModels))
 	for i := range livecommentModels {
 		livecomment, err := fillLivecommentResponse(ctx, tx, livecommentModels[i])
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "failed to fil livecomments: "+err.Error())
 		}
 
-		livecomments[i] = livecomment
+		res[i] = livecomment
 	}
 
-	return c.JSON(http.StatusOK, livecomments)
+	return c.JSON(http.StatusOK, res)
 }
 
 func getNgwords(c echo.Context) error {
@@ -220,6 +210,7 @@ func postLivecommentHandler(c echo.Context) error {
 	}
 
 	scores.add(int64(livestreamID), req.Tip)
+	livecomments.add(livecommentModel)
 
 	return c.JSON(http.StatusCreated, livecomment)
 }
@@ -363,6 +354,23 @@ func moderateHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 	scores.add(int64(livestreamID), -deletedTips)
+	{
+		words := make([]string, 0, len(ngwords))
+		wildcard := false
+		for _, w := range ngwords {
+			words = append(words, w.Word)
+			if strings.ContainsAny(w.Word, `%_\`) {
+				wildcard = true
+			}
+		}
+		if wildcard {
+			if err := livecomments.reloadLivestream(ctx, dbConn, int64(livestreamID)); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload livecomments: "+err.Error())
+			}
+		} else {
+			livecomments.removeMatching(int64(livestreamID), words)
+		}
+	}
 	ngWords.add(NGWord{ID: wordID, UserID: int64(userID), LivestreamID: int64(livestreamID), Word: req.NGWord, CreatedAt: ngWordCreatedAt})
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
