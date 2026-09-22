@@ -21,6 +21,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 
 	"github.com/miekg/dns"
 )
@@ -28,6 +29,7 @@ import (
 const (
 	dnsZone     = "u.isucon.local."
 	dnsTTL      = 120 // ベンチは TTL の間だけ結果をキャッシュする（マニュアル）。長いほど問い合わせが減る
+	dnsPipeTTL  = 1   // pipe はラウンドロビンで分散したいので短く
 	dnsZoneFile = "../pdns/u.isucon.local.zone"
 )
 
@@ -35,6 +37,8 @@ var (
 	dnsStaticNames = map[string]struct{}{} // ゾーンファイル由来の名前（apex は ""）
 	dnsAddr        net.IP                  // ゾーンファイル由来の名前（pipe など）に返す IP
 	dnsUserAddrs   []net.IP                // 配信者サブドメイン（登録ユーザー名）に返す IP（名前のハッシュで選ぶ）。空なら dnsAddr
+	dnsPipeAddrs   []net.IP                // pipe に返す IP（問い合わせごとにラウンドロビン、TTL 短め）。空なら dnsAddr
+	dnsPipeCounter atomic.Uint64
 	dnsSOA         *dns.SOA
 	dnsMu          sync.RWMutex
 )
@@ -113,13 +117,20 @@ func handleDNS(w dns.ResponseWriter, r *dns.Msg) {
 		// 配信者サブドメイン（ユーザー名。初期データのユーザーも含む）は名前のハッシュで dnsUserAddrs から選び、
 		// それ以外（pipe や www などゾーンファイルの特別な名前、apex）は dnsAddr
 		addr := dnsAddr
-		if len(dnsUserAddrs) > 0 && sub != "" && users.hasLowerName(sub) {
+		ttl := uint32(dnsTTL)
+		if sub == "pipe" && len(dnsPipeAddrs) > 0 {
+			// pipe 宛は全リクエストの 7 割で、ベンチは接続を作り直すたびに TLS フルハンドシェイクをする。
+			// 問い合わせごとに答えを変え TTL を短くして、ハンドシェイクの CPU を複数の nginx に分散する
+			n := dnsPipeCounter.Add(1)
+			addr = dnsPipeAddrs[int(n%uint64(len(dnsPipeAddrs)))]
+			ttl = dnsPipeTTL
+		} else if len(dnsUserAddrs) > 0 && sub != "" && users.hasLowerName(sub) {
 			h := fnv.New32a()
 			h.Write([]byte(sub))
 			addr = dnsUserAddrs[int(h.Sum32()%uint32(len(dnsUserAddrs)))]
 		}
 		m.Answer = []dns.RR{&dns.A{
-			Hdr: dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: dnsTTL},
+			Hdr: dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: ttl},
 			A:   addr,
 		}}
 	case dns.TypeSOA:
@@ -149,6 +160,15 @@ func startDNSServer(addr string) error {
 	dnsAddr = net.ParseIP(addr).To4()
 	if dnsAddr == nil {
 		return fmt.Errorf("invalid DNS answer address: %q", addr)
+	}
+	if v, ok := os.LookupEnv("ISUCON13_DNS_PIPE_ADDRESS"); ok && v != "" {
+		for _, a := range strings.Split(v, ",") {
+			ip := net.ParseIP(strings.TrimSpace(a)).To4()
+			if ip == nil {
+				return fmt.Errorf("invalid ISUCON13_DNS_PIPE_ADDRESS: %q", v)
+			}
+			dnsPipeAddrs = append(dnsPipeAddrs, ip)
+		}
 	}
 	// カンマ区切り。同じ IP を複数書けば重み付けになる（例: "ip1,ip3,ip3" なら 1:2）
 	if v, ok := os.LookupEnv("ISUCON13_DNS_USER_ADDRESS"); ok && v != "" {
