@@ -1,2 +1,3 @@
 # このノードで enable するサービス（deploy.sh が読む。書かれていない管理対象は disable）
-# 未使用（今は何も動かさない）
+# nginx（TLS 終端・静的ファイル）。/api は isucon13-1 の :8080 へ
+nginx

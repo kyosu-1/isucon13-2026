@@ -23,14 +23,15 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 NOTE="${1:-}"
-ENTRY="${ENTRY:-isucon13-1}"
+ENTRY="${ENTRY:-isucon13-1}"          # nginx（アクセスログ）が動くノード
 DB_HOST="${DB_HOST:-isucon13-1}"
+DNS_HOST="${DNS_HOST:-$ENTRY}"        # ベンチが名前解決に使うノード
 read -r -a APP_HOSTS_ARR <<< "${APP_HOSTS:-isucon13-1 isucon13-2 isucon13-3}"
 BENCH="${BENCH:?BENCH が未設定です。make 経由で実行してください}"
 
 ip_of() { ssh -o ConnectTimeout=5 "$1" 'hostname -I | awk "{print \$1}"'; }
-n="${ENTRY##*-}"; v="ISU${n}_IP"
-TARGET_IP="${!v:-$(ip_of "$ENTRY")}"
+n="${DNS_HOST##*-}"; v="ISU${n}_IP"
+TARGET_IP="${!v:-$(ip_of "$DNS_HOST")}"
 BENCH_IP="${BENCH_IP:-$(ip_of "$BENCH")}"
 # 名前解決の結果として許容する競技サーバーのIP（nameserver 自身は自動で含まれる）
 WEBAPP_FLAGS=""
@@ -48,7 +49,8 @@ SUBJECT="$(git log -1 --format=%s 2>/dev/null || echo '-')"
 {
   echo "timestamp : $TS"
   echo "commit    : $COMMIT  $SUBJECT"
-  echo "entry     : $ENTRY ($TARGET_IP)"
+  echo "entry     : $ENTRY (nginx)"
+  echo "dns_host  : $DNS_HOST ($TARGET_IP)"
   echo "app_hosts : ${APP_HOSTS_ARR[*]}"
   echo "db_host   : $DB_HOST"
   echo "bench     : $BENCH ($BENCH_IP)"

@@ -8,16 +8,18 @@ SHELL := /bin/bash
 #   ENTRY     : ベンチマーカーがアクセスする入口（nginx が動くノード）
 #   APP_HOSTS : 競技サーバー3台（レギュレーション上、使えるのはこの3台だけ）
 #   BENCH     : ベンチマーカー専用ノード（競技サーバーではない）
-ENTRY     ?= isucon13-1
+#   DNS_HOST  : ベンチマーカーが名前解決に使うノード（アプリ内 DNS が動くノード）
+ENTRY     ?= isucon13-3
 APP_HOSTS ?= isucon13-1 isucon13-2 isucon13-3
 DB_HOST   ?= isucon13-2
+DNS_HOST  ?= isucon13-1
 
 -include hosts.generated.mk
 BENCH ?= isucon13-4
 
 # tools/ 配下のスクリプトは環境変数で対象ホストを受け取る。
 # Make変数は自動ではレシピの環境に入らないので明示的にexportする。
-export ENTRY APP_HOSTS DB_HOST BENCH
+export ENTRY APP_HOSTS DB_HOST DNS_HOST BENCH
 export ISU1_IP ISU2_IP ISU3_IP BENCH_IP
 
 # =============================================================================
@@ -39,6 +41,7 @@ info: ## 現在の対象ホストを表示
 	@echo "ENTRY     = $(ENTRY)"
 	@echo "APP_HOSTS = $(APP_HOSTS)"
 	@echo "DB_HOST   = $(DB_HOST)"
+	@echo "DNS_HOST  = $(DNS_HOST)"
 	@echo "BENCH     = $(BENCH) ($(BENCH_IP))"
 	@echo "ISU1..3   = $(ISU1_IP) $(ISU2_IP) $(ISU3_IP)"
 
@@ -103,4 +106,4 @@ restart-test: ## 再起動試験（3台とも再起動してもベンチが通�
 
 .PHONY: logs
 logs: ## アプリのエラーログを追う
-	@ssh $(ENTRY) 'sudo journalctl -f -u isupipe-go -n 100'
+	@ssh $(DNS_HOST) 'sudo journalctl -f -u isupipe-go -n 100'

@@ -1,3 +1,3 @@
 # このノードで enable するサービス（deploy.sh が読む。書かれていない管理対象は disable）
-# 入口: nginx + アプリ（アプリ内 DNS を含む）。MySQL は isucon13-2。PowerDNS は使わない
-nginx isupipe-go
+# アプリ（:8080）+ アプリ内 DNS（:53）。nginx は isucon13-3、MySQL は isucon13-2
+isupipe-go
