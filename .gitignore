@@ -12,3 +12,7 @@ measurements/**/raw/
 
 # --- OS ---
 .DS_Store
+
+# --- 秘密情報（AMI 由来でも公開リポジトリには入れない。サーバー側に既にあるので deploy には不要） ---
+etc/*/nginx/tls/*.key
+etc/*/mysql/debian.cnf
