@@ -1,0 +1,13 @@
+COMMAND                   AVG_CPU%
+mysqld                        61.3
+nginx                         33.7
+pidstat                        0.4
+jbd2/nvme0n1p1-8               0.1
+systemd-journal                0.0
+sshd                           0.0
+rcu_sched                      0.0
+kworker/u4:2-events_unbound       0.0
+kworker/u4:0-writeback         0.0
+kworker/0:3-events             0.0
+ksoftirqd/1                    0.0
+ksoftirqd/0                    0.0

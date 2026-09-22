@@ -1,0 +1,9 @@
+timestamp : 20260922-201533
+commit    : 59d9ba1  nginx: アクセスログに接続 ID・接続内リクエスト数・TLS 再開・プロトコルを出す（遅い回の isu3 の CPU 上昇の切り分け）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 接続/TLS 再開のログ付き
+dirty     : 0 files uncommitted (webapp/ etc/)
