@@ -1,0 +1,82 @@
+{
+  "pass": true,
+  "score": 499869,
+  "error_count": 227,
+  "errors": [
+    {
+      "count": 226,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7535/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7616/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7591/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/8139/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:400)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 7244,
+      "fail": 1
+    },
+    "dns-watertorture-attack": {
+      "success": 1837,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 1372,
+      "fail": 8095
+    },
+    "streamer-moderate": {
+      "success": 5319,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 7008,
+      "fail": 238
+    },
+    "viewer": {
+      "success": 2561,
+      "fail": 0
+    },
+    "aggressive-streamer-moderate-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 8095
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 238
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 180031,
+    "failed": 0
+  },
+  "viewers_completed": 2561,
+  "phases": {
+    "initialize_sec": 2.8,
+    "pretest_sec": 4.3,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 180031",
+    "売上: 499869"
+  ],
+  "dns_resolved": 180031,
+  "scenario_success": 25400,
+  "scenario_fail": 16668
+}
