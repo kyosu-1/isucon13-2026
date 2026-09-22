@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+nginx                        105.6
+pidstat                        0.7
+rcu_sched                      0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+vmstat                         0.0
+systemd-logind                 0.0
+systemd-journal                0.0
+systemd                        0.0
+sshd                           0.0
+kworker/u4:2-writeback         0.0
+kworker/u4:2-flush-259:0       0.0
+kworker/u4:2-events_unbound       0.0
+kworker/u4:1-writeback         0.0
+kworker/u4:1-ext4-rsv-conversion       0.0

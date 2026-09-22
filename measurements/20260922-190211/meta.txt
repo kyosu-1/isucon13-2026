@@ -1,0 +1,9 @@
+timestamp : 20260922-190211
+commit    : cfda9b5  bench: 428672 アプリだけ再起動（差なし → アプリの状態ではない）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : MySQL を再起動して計測（切り分け）
+dirty     : 0 files uncommitted (webapp/ etc/)
