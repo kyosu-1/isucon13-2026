@@ -1,0 +1,17 @@
+2026-09-22T08:29:10.491Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T08:29:10.491Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T08:29:10.491Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T08:29:10.491Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T08:29:26.258Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T08:29:43.686Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T08:29:43.686Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T08:29:45.696Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T08:29:47.696Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 4}
+2026-09-22T08:29:57.695Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 6}
+2026-09-22T08:30:43.687Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T08:30:43.690Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "inakamura2", "livestream_id": 7562, "error": "Post \"https://shohei800.u.isucon.local:443/api/livestream/7562/livecomment\": context canceled: ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T08:30:44.462Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T08:30:44.462Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T08:30:44.463Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T08:30:44.463Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T08:30:44.463Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 34}
