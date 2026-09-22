@@ -1,0 +1,9 @@
+timestamp : 20260922-182355
+commit    : 592cc35  NG ワードをメモリキャッシュ、スパム判定を Go の文字列一致に（LIKE '%word%' と同じ判定）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : NG ワードキャッシュ・Go でスパム判定
+dirty     : 0 files uncommitted (webapp/ etc/)

@@ -1,0 +1,14 @@
+COMMAND                   AVG_CPU%
+isupipe                      114.4
+systemd-journal                0.7
+pidstat                        0.4
+mysqld                         0.3
+rsyslogd                       0.2
+rcu_sched                      0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+vmstat                         0.0
+systemd                        0.0
+mysql                          0.0
+kworker/u4:2-flush-259:0       0.0
+kworker/1:0-mm_percpu_wq       0.0
