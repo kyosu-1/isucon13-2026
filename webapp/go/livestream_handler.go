@@ -158,13 +158,14 @@ func reserveLivestreamHandler(c echo.Context) error {
 		}
 	}
 
+	if err := tx.Commit(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
+	}
+	tags.setLivestreamTags(livestreamID, req.Tags)
+
 	livestream, err := fillLivestreamResponse(ctx, tx, *livestreamModel)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to fill livestream: "+err.Error())
-	}
-
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, livestream)
@@ -183,9 +184,16 @@ func searchLivestreamsHandler(c echo.Context) error {
 	var livestreamModels []*LivestreamModel
 	if c.QueryParam("tag") != "" {
 		// タグによる取得
-		var tagIDList []int
-		if err := tx.SelectContext(ctx, &tagIDList, "SELECT id FROM tags WHERE name = ?", keyTagName); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "failed to get tags: "+err.Error())
+		var tagIDList []int64
+		if t, ok := tags.getByName(keyTagName); ok {
+			tagIDList = append(tagIDList, t.ID)
+		}
+		if len(tagIDList) == 0 {
+			// 該当タグなし: 元実装は IN () で 500 になるが、空配列を返す
+			if err := tx.Commit(); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
+			}
+			return c.JSON(http.StatusOK, []Livestream{})
 		}
 
 		query, params, err := sqlx.In("SELECT * FROM livestream_tags WHERE tag_id IN (?) ORDER BY livestream_id DESC", tagIDList)
@@ -490,21 +498,18 @@ func fillLivestreamResponse(ctx context.Context, tx *sqlx.Tx, livestreamModel Li
 		return Livestream{}, err
 	}
 
-	var livestreamTagModels []*LivestreamTagModel
-	if err := tx.SelectContext(ctx, &livestreamTagModels, "SELECT * FROM livestream_tags WHERE livestream_id = ?", livestreamModel.ID); err != nil {
-		return Livestream{}, err
-	}
-
-	tags := make([]Tag, len(livestreamTagModels))
-	for i := range livestreamTagModels {
-		tagModel := TagModel{}
-		if err := tx.GetContext(ctx, &tagModel, "SELECT * FROM tags WHERE id = ?", livestreamTagModels[i].TagID); err != nil {
+	tagList, ok := tags.forLivestream(livestreamModel.ID)
+	if !ok {
+		// キャッシュに無い（通常は起きない）: DB から
+		var livestreamTagModels []*LivestreamTagModel
+		if err := tx.SelectContext(ctx, &livestreamTagModels, "SELECT * FROM livestream_tags WHERE livestream_id = ?", livestreamModel.ID); err != nil {
 			return Livestream{}, err
 		}
-
-		tags[i] = Tag{
-			ID:   tagModel.ID,
-			Name: tagModel.Name,
+		tagList = make([]Tag, 0, len(livestreamTagModels))
+		for _, lt := range livestreamTagModels {
+			if t, ok := tags.getByID(lt.TagID); ok {
+				tagList = append(tagList, *t)
+			}
 		}
 	}
 
@@ -512,7 +517,7 @@ func fillLivestreamResponse(ctx context.Context, tx *sqlx.Tx, livestreamModel Li
 		ID:           livestreamModel.ID,
 		Owner:        owner,
 		Title:        livestreamModel.Title,
-		Tags:         tags,
+		Tags:         tagList,
 		Description:  livestreamModel.Description,
 		PlaylistUrl:  livestreamModel.PlaylistUrl,
 		ThumbnailUrl: livestreamModel.ThumbnailUrl,

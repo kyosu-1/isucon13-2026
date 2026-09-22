@@ -151,3 +151,89 @@ func userResponseByID(ctx context.Context, tx *sqlx.Tx, id int64) (User, error) 
 	}
 	return fillUserResponse(ctx, tx, um)
 }
+
+// ---- タグ（不変）と配信ごとのタグ（配信作成時に確定、以後不変） ----
+
+type tagCache struct {
+	mu           sync.RWMutex
+	all          []*Tag
+	byID         map[int64]*Tag
+	byName       map[string]*Tag
+	byLivestream map[int64][]Tag
+}
+
+var tags = &tagCache{byID: map[int64]*Tag{}, byName: map[string]*Tag{}, byLivestream: map[int64][]Tag{}}
+
+func (tc *tagCache) reload(ctx context.Context, db *sqlx.DB) error {
+	var tagModels []TagModel
+	if err := db.SelectContext(ctx, &tagModels, "SELECT * FROM tags ORDER BY id"); err != nil {
+		return err
+	}
+	var lts []LivestreamTagModel
+	if err := db.SelectContext(ctx, &lts, "SELECT * FROM livestream_tags ORDER BY id"); err != nil {
+		return err
+	}
+	all := make([]*Tag, 0, len(tagModels))
+	byID := make(map[int64]*Tag, len(tagModels))
+	byName := make(map[string]*Tag, len(tagModels))
+	for _, t := range tagModels {
+		tag := &Tag{ID: t.ID, Name: t.Name}
+		all = append(all, tag)
+		byID[t.ID] = tag
+		byName[t.Name] = tag
+	}
+	byLivestream := make(map[int64][]Tag)
+	for _, lt := range lts {
+		if tag, ok := byID[lt.TagID]; ok {
+			byLivestream[lt.LivestreamID] = append(byLivestream[lt.LivestreamID], *tag)
+		}
+	}
+	tc.mu.Lock()
+	tc.all, tc.byID, tc.byName, tc.byLivestream = all, byID, byName, byLivestream
+	tc.mu.Unlock()
+	return nil
+}
+
+func (tc *tagCache) list() []*Tag {
+	tc.mu.RLock()
+	defer tc.mu.RUnlock()
+	return tc.all
+}
+
+func (tc *tagCache) getByName(name string) (*Tag, bool) {
+	tc.mu.RLock()
+	defer tc.mu.RUnlock()
+	t, ok := tc.byName[name]
+	return t, ok
+}
+
+func (tc *tagCache) getByID(id int64) (*Tag, bool) {
+	tc.mu.RLock()
+	defer tc.mu.RUnlock()
+	t, ok := tc.byID[id]
+	return t, ok
+}
+
+// 配信のタグ。無ければ空スライス（nil ではなく [] を返す。JSON で [] にするため）
+func (tc *tagCache) forLivestream(id int64) ([]Tag, bool) {
+	tc.mu.RLock()
+	defer tc.mu.RUnlock()
+	ts, ok := tc.byLivestream[id]
+	if ts == nil {
+		ts = []Tag{}
+	}
+	return ts, ok
+}
+
+// 配信作成（DB コミット後に呼ぶ）
+func (tc *tagCache) setLivestreamTags(livestreamID int64, tagIDs []int64) {
+	tc.mu.Lock()
+	defer tc.mu.Unlock()
+	ts := make([]Tag, 0, len(tagIDs))
+	for _, id := range tagIDs {
+		if t, ok := tc.byID[id]; ok {
+			ts = append(ts, *t)
+		}
+	}
+	tc.byLivestream[livestreamID] = ts
+}
