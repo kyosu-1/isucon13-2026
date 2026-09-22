@@ -15,7 +15,6 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -65,6 +64,8 @@ func connectDB(logger echo.Logger) (*sqlx.DB, error) {
 	conf.Passwd = "isucon"
 	conf.DBName = "isupipe"
 	conf.ParseTime = true
+	// プレースホルダをクライアント側で展開し、1クエリ = 1往復にする（ADMIN PREPARE/CLOSE が DB 時間の 10% だった）
+	conf.InterpolateParams = true
 
 	if v, ok := os.LookupEnv(networkTypeEnvKey); ok {
 		conf.Net = v
@@ -97,7 +98,9 @@ func connectDB(logger echo.Logger) (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(10)
+	db.SetMaxOpenConns(64)
+	db.SetMaxIdleConns(64)
+	db.SetConnMaxLifetime(0)
 
 	if err := db.Ping(); err != nil {
 		return nil, err
@@ -120,9 +123,8 @@ func initializeHandler(c echo.Context) error {
 
 func main() {
 	e := echo.New()
-	e.Debug = true
-	e.Logger.SetLevel(echolog.DEBUG)
-	e.Use(middleware.Logger())
+	e.Debug = false
+	e.Logger.SetLevel(echolog.ERROR)
 	cookieStore := sessions.NewCookieStore(secret)
 	cookieStore.Options.Domain = "*.u.isucon.local"
 	e.Use(session.Middleware(cookieStore))
