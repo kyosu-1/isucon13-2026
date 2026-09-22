@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+mysqld                        24.2
+systemd-journal                0.2
+rcu_sched                      0.2
+pidstat                        0.2
+kworker/u4:1-events_power_efficient       0.2
+jbd2/nvme0n1p1-8               0.2

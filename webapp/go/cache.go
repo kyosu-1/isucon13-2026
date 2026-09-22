@@ -11,6 +11,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/jmoiron/sqlx"
@@ -24,13 +25,14 @@ type cachedUser struct {
 }
 
 type userCache struct {
-	mu     sync.RWMutex
-	byID   map[int64]*cachedUser
-	byName map[string]*cachedUser
+	mu        sync.RWMutex
+	byID      map[int64]*cachedUser
+	byName    map[string]*cachedUser
+	lowerName map[string]struct{} // DNS 用（名前は大文字を含みうるが DNS は大文字小文字を区別しない）
 }
 
 var (
-	users             = &userCache{byID: map[int64]*cachedUser{}, byName: map[string]*cachedUser{}}
+	users             = &userCache{byID: map[int64]*cachedUser{}, byName: map[string]*cachedUser{}, lowerName: map[string]struct{}{}}
 	fallbackImageData []byte
 	fallbackIconHash  string
 )
@@ -66,10 +68,12 @@ func (uc *userCache) reload(ctx context.Context, db *sqlx.DB) error {
 
 	byID := make(map[int64]*cachedUser, len(userModels))
 	byName := make(map[string]*cachedUser, len(userModels))
+	lowerName := make(map[string]struct{}, len(userModels))
 	for _, u := range userModels {
 		cu := &cachedUser{User: u, IconHash: fallbackIconHash}
 		byID[u.ID] = cu
 		byName[u.Name] = cu
+		lowerName[strings.ToLower(u.Name)] = struct{}{}
 	}
 	for _, t := range themes {
 		if cu, ok := byID[t.UserID]; ok {
@@ -86,8 +90,17 @@ func (uc *userCache) reload(ctx context.Context, db *sqlx.DB) error {
 	uc.mu.Lock()
 	uc.byID = byID
 	uc.byName = byName
+	uc.lowerName = lowerName
 	uc.mu.Unlock()
 	return nil
+}
+
+// DNS 用: 小文字化した名前が登録されているか
+func (uc *userCache) hasLowerName(lower string) bool {
+	uc.mu.RLock()
+	defer uc.mu.RUnlock()
+	_, ok := uc.lowerName[lower]
+	return ok
 }
 
 func (uc *userCache) getByID(id int64) (*cachedUser, bool) {
@@ -110,6 +123,7 @@ func (uc *userCache) add(u UserModel, t ThemeModel) {
 	uc.mu.Lock()
 	uc.byID[u.ID] = cu
 	uc.byName[u.Name] = cu
+	uc.lowerName[strings.ToLower(u.Name)] = struct{}{}
 	uc.mu.Unlock()
 }
 

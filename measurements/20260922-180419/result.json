@@ -1,0 +1,1 @@
+{"pass":false,"score":0,"messages":["整合性チェックに失敗しました","Post \"https://wkGQKEWut2.u.isucon.local:443/api/livestream/reservation\": 「wkGQKEWut2.u.isucon.local」の名前解決に失敗しました (rcode=3): ベンチマーク走行が継続できないエラーが発生しました"],"language":"golang","resolved_count":0}

@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+isupipe                        2.2
+mysql                          1.0
+systemd-journal                0.2
+pidstat                        0.2
+packagekitd                    0.2
+nginx                          0.2
+mysqld                         0.2

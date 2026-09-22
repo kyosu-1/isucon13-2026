@@ -75,8 +75,7 @@ func dnsNameExists(sub string) bool {
 	if sub == "" {
 		return false
 	}
-	_, ok = users.getByName(sub)
-	return ok
+	return users.hasLowerName(sub)
 }
 
 func handleDNS(w dns.ResponseWriter, r *dns.Msg) {
