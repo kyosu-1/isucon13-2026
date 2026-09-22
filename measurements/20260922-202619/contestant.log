@@ -1,0 +1,23 @@
+2026-09-22T11:26:21.199Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T11:26:21.199Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T11:26:21.199Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T11:26:21.199Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T11:26:23.906Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T11:26:28.236Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T11:26:28.237Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T11:26:30.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T11:26:32.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 4}
+2026-09-22T11:26:34.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 6}
+2026-09-22T11:26:36.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 9}
+2026-09-22T11:26:38.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 13}
+2026-09-22T11:26:40.246Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 15}
+2026-09-22T11:27:28.240Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T11:27:28.240Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "tsubasatakahashi1", "livestream_id": 8522, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:27:28.241Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "otakahashi0", "livestream_id": 8501, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:27:28.241Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "osamu730", "livestream_id": 8444, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:27:28.241Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "kana430", "livestream_id": 8516, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:27:28.603Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T11:27:28.603Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T11:27:28.603Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T11:27:28.603Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T11:27:28.611Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 3535}

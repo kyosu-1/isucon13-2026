@@ -1,0 +1,9 @@
+timestamp : 20260922-202619
+commit    : 00c2c41  pipe のラウンドロビンを無効化（固定 isu3 に戻す）。run.sh: conns-<host>.txt を自動保存
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 同一構成で再計測（遅い回の採取 2）
+dirty     : 0 files uncommitted (webapp/ etc/)
