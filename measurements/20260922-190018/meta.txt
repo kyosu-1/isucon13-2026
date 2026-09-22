@@ -1,0 +1,9 @@
+timestamp : 20260922-190018
+commit    : 182911a  bench: 425458 再起動なしの2回目（再起動直後より -11%）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : アプリだけ再起動して計測（再起動後 +14% の切り分け）
+dirty     : 0 files uncommitted (webapp/ etc/)

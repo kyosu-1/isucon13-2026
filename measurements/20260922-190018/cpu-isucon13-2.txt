@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+mysqld                        59.1
+pidstat                        0.6
+landscape-sysin                0.6
+systemd-timedat                0.1
+jbd2/nvme0n1p1-8               0.1
+systemd-logind                 0.0
+systemd-journal                0.0
+systemd                        0.0
+sshd                           0.0
+snapd                          0.0
+kworker/u4:3-events_unbound       0.0
+kworker/u4:2-ext4-rsv-conversion       0.0
+kworker/1:4-mm_percpu_wq       0.0
+kworker/1:4-events             0.0
+dbus-daemon                    0.0
