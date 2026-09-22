@@ -1,0 +1,10 @@
+COMMAND                   AVG_CPU%
+nginx                        102.2
+pidstat                        0.4
+rcu_sched                      0.1
+ksoftirqd/1                    0.1
+systemd-logind                 0.0
+rsyslogd                       0.0
+kworker/u4:3-events_unbound       0.0
+kworker/u4:1-events_unbound       0.0
+ksoftirqd/0                    0.0

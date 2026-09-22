@@ -1,0 +1,9 @@
+timestamp : 20260922-180809
+commit    : c806b4b  nginx を isucon13-3 に分離（DNS の A レコードは isu3 を指す。isu1 = アプリ + DNS、isu2 = MySQL）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : nginx を isu3 に分離
+dirty     : 0 files uncommitted (webapp/ etc/)

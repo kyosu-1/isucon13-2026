@@ -1,0 +1,70 @@
+{
+  "pass": true,
+  "score": 260266,
+  "error_count": 168,
+  "errors": [
+    {
+      "count": 168,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7530/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7554/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7550/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7575/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7537/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 7229,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 1812,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 775,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 5306,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 7036,
+      "fail": 192
+    },
+    "viewer": {
+      "success": 1341,
+      "fail": 0
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 192
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 178427,
+    "failed": 0
+  },
+  "viewers_completed": 1341,
+  "phases": {
+    "initialize_sec": 2.6,
+    "pretest_sec": 5.0,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 178427",
+    "売上: 260266"
+  ],
+  "dns_resolved": 178427,
+  "scenario_success": 23558,
+  "scenario_fail": 384
+}

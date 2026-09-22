@@ -1,0 +1,22 @@
+2026-09-22T09:08:11.514Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T09:08:11.514Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T09:08:11.514Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T09:08:11.514Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T09:08:14.139Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T09:08:19.103Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T09:08:19.103Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T09:08:21.112Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T09:08:23.113Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 4}
+2026-09-22T09:08:25.113Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 6}
+2026-09-22T09:08:27.113Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 9}
+2026-09-22T09:08:29.112Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 13}
+2026-09-22T09:08:31.112Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 15}
+2026-09-22T09:09:19.103Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T09:09:19.104Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "tyamamoto1", "livestream_id": 7602, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T09:09:19.104Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "nanamikimura0", "livestream_id": 7785, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T09:09:19.106Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "nanaminakamura0", "livestream_id": 7577, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T09:09:19.638Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T09:09:19.638Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T09:09:19.638Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T09:09:19.638Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T09:09:19.638Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 1341}
