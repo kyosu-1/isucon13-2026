@@ -55,6 +55,16 @@ for HOST in "${HOSTS[@]}"; do
       systemctl is-enabled --quiet \$s 2>/dev/null && printf '%s=%s ' \$s \$(systemctl is-active \$s); done; echo"
 done
 
+# アプリは別ノードの MySQL を待ってから上がる（最大 60 秒リトライ）。API が応答するまで待つ
+echo "==> API の起動待ち"
+ENTRY="${ENTRY:-isucon13-3}"
+for attempt in $(seq 1 30); do
+  code="$(ssh "${SSH_OPTS[@]}" "$ENTRY" "curl -sk -o /dev/null -w '%{http_code}' --resolve pipe.u.isucon.local:443:127.0.0.1 'https://pipe.u.isucon.local/api/tag'" 2>/dev/null || true)"
+  [ "$code" = "200" ] && { echo "    api=200 (${attempt}回目)"; break; }
+  sleep 3
+  [ "$attempt" = 30 ] && { echo "!! API が起動しません (code=$code)" >&2; exit 1; }
+done
+
 echo "==> 再起動後のベンチで最終確認"
 if [ -z "${BENCH:-}" ] && [ -f hosts.generated.mk ]; then
   BENCH="$(awk -F':= *' '/^BENCH :=/ {print $2}' hosts.generated.mk)"

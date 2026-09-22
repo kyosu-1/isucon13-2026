@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"strconv"
 	"sync"
+	"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -209,8 +210,17 @@ func main() {
 
 	e.HTTPErrorHandler = errorResponseHandler
 
-	// DB接続
-	conn, err := connectDB(e.Logger)
+	// DB接続（MySQL は別ノード。再起動直後は先に上がっていないことがあるので 60 秒までリトライ）
+	var conn *sqlx.DB
+	var err error
+	for i := 0; i < 60; i++ {
+		conn, err = connectDB(e.Logger)
+		if err == nil {
+			break
+		}
+		e.Logger.Errorf("failed to connect db (retrying): %v", err)
+		time.Sleep(1 * time.Second)
+	}
 	if err != nil {
 		e.Logger.Errorf("failed to connect db: %v", err)
 		os.Exit(1)
