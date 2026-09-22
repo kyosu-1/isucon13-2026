@@ -123,11 +123,8 @@ func postIconHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "failed to decode the request body as json")
 	}
 
-	tx, err := dbConn.BeginTxx(ctx, nil)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to begin transaction: "+err.Error())
-	}
-	defer tx.Rollback()
+	// 書き込みは1文だけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
+	tx := dbConn
 
 	// DELETE → INSERT だと user_id の二次索引のギャップロック同士でデッドロックする（並行更新で 24 件の 500）。
 	// user_id を UNIQUE にして 1 文の upsert にする
@@ -141,9 +138,6 @@ func postIconHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get last inserted icon id: "+err.Error())
 	}
 
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
-	}
 	users.setIcon(userID, req.Image)
 
 	return c.JSON(http.StatusCreated, &PostIconResponse{

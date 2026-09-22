@@ -170,11 +170,8 @@ func postLivecommentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "failed to decode the request body as json")
 	}
 
-	tx, err := dbConn.BeginTxx(ctx, nil)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to begin transaction: "+err.Error())
-	}
-	defer tx.Rollback()
+	// 書き込みは1文だけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
+	tx := dbConn
 
 	livestreamModel, err := livestreamByID(ctx, tx, int64(livestreamID))
 	if err != nil {
@@ -229,9 +226,6 @@ func postLivecommentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to fill livecomment: "+err.Error())
 	}
 
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
-	}
 	scores.add(int64(livestreamID), req.Tip)
 
 	return c.JSON(http.StatusCreated, livecomment)
@@ -259,11 +253,8 @@ func reportLivecommentHandler(c echo.Context) error {
 	// existence already checked
 	userID := sess.Values[defaultUserIDKey].(int64)
 
-	tx, err := dbConn.BeginTxx(ctx, nil)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to begin transaction: "+err.Error())
-	}
-	defer tx.Rollback()
+	// 書き込みは1文だけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
+	tx := dbConn
 
 	if _, err := livestreamByID(ctx, tx, int64(livestreamID)); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -302,9 +293,6 @@ func reportLivecommentHandler(c echo.Context) error {
 	report, err := fillLivecommentReportResponse(ctx, tx, reportModel)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to fill livecomment report: "+err.Error())
-	}
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, report)

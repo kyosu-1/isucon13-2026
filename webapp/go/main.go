@@ -9,6 +9,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/exec"
 	"strconv"
@@ -251,6 +252,11 @@ func main() {
 			os.Exit(1)
 		}
 	}
+
+	// pprof（127.0.0.1:6060。tools/analyze/pprof.sh で取る）
+	go func() {
+		log.Println(http.ListenAndServe("127.0.0.1:6060", nil))
+	}()
 
 	// HTTPサーバ起動
 	listenAddr := net.JoinHostPort("", strconv.Itoa(listenPort))

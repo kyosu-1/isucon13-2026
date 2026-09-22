@@ -98,11 +98,8 @@ func postReactionHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "failed to decode the request body as json")
 	}
 
-	tx, err := dbConn.BeginTxx(ctx, nil)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to begin transaction: "+err.Error())
-	}
-	defer tx.Rollback()
+	// 書き込みは1文だけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
+	tx := dbConn
 
 	reactionModel := ReactionModel{
 		UserID:       int64(userID),
@@ -127,9 +124,6 @@ func postReactionHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to fill reaction: "+err.Error())
 	}
 
-	if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
-	}
 	scores.add(int64(livestreamID), 1)
 
 	return c.JSON(http.StatusCreated, reaction)
