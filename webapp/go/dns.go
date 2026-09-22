@@ -110,12 +110,10 @@ func handleDNS(w dns.ResponseWriter, r *dns.Msg) {
 
 	switch q.Qtype {
 	case dns.TypeA, dns.TypeANY:
-		// 静的な名前（pipe 等）は dnsAddr、配信者サブドメインは dnsUserAddr（nginx を 2 台に分けるため）
+		// 配信者サブドメイン（ユーザー名。初期データのユーザーも含む）は名前のハッシュで dnsUserAddrs から選び、
+		// それ以外（pipe や www などゾーンファイルの特別な名前、apex）は dnsAddr
 		addr := dnsAddr
-		dnsMu.RLock()
-		_, static := dnsStaticNames[sub]
-		dnsMu.RUnlock()
-		if !static && len(dnsUserAddrs) > 0 {
+		if len(dnsUserAddrs) > 0 && sub != "" && users.hasLowerName(sub) {
 			h := fnv.New32a()
 			h.Write([]byte(sub))
 			addr = dnsUserAddrs[int(h.Sum32()%uint32(len(dnsUserAddrs)))]
