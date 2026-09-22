@@ -1,0 +1,44 @@
+File: isupipe
+Build ID: a7e792ba76e286e89ce3b329b117a2eed69c1297
+Type: cpu
+Time: 2026-09-22 19:15:45 JST
+Duration: 30s, Total samples = 13.66s (45.53%)
+Showing nodes accounting for 7.60s, 55.64% of 13.66s total
+Dropped 568 nodes (cum <= 0.07s)
+Showing top 35 nodes out of 288
+      flat  flat%   sum%        cum   cum%
+     2.89s 21.16% 21.16%      2.89s 21.16%  internal/runtime/syscall/linux.Syscall6
+     1.23s  9.00% 30.16%      1.68s 12.30%  github.com/goccy/go-json/internal/encoder.appendNormalizedHTMLString
+     0.40s  2.93% 33.09%      0.40s  2.93%  github.com/goccy/go-json/internal/encoder.decodeRuneInString
+     0.40s  2.93% 36.02%      0.40s  2.93%  runtime.futex
+     0.32s  2.34% 38.36%      0.32s  2.34%  runtime.memmove
+     0.16s  1.17% 39.53%      2.25s 16.47%  github.com/goccy/go-json/internal/encoder/vm.Run
+     0.15s  1.10% 40.63%      0.15s  1.10%  net/textproto.validHeaderValueByte (inline)
+     0.13s  0.95% 41.58%      0.13s  0.95%  internal/runtime/maps.memHashAES
+     0.12s  0.88% 42.46%      0.92s  6.73%  net/textproto.readMIMEHeader
+     0.11s  0.81% 43.27%      0.12s  0.88%  github.com/goccy/go-json/internal/encoder.AppendInt
+     0.10s  0.73% 44.00%      0.86s  6.30%  runtime.mallocgc
+     0.10s  0.73% 44.73%      0.14s  1.02%  sort.partition
+     0.09s  0.66% 45.39%      0.09s  0.66%  indexbytebody
+     0.09s  0.66% 46.05%      0.09s  0.66%  net/textproto.validHeaderFieldByte (inline)
+     0.09s  0.66% 46.71%      0.09s  0.66%  time.runtimeNow
+     0.08s  0.59% 47.29%      0.09s  0.66%  github.com/labstack/echo/v4.(*Router).Find
+     0.08s  0.59% 47.88%      0.47s  3.44%  net/http.(*chunkWriter).writeHeader
+     0.08s  0.59% 48.46%      0.15s  1.10%  runtime.mallocgcSmallScanNoHeaderSC3
+     0.08s  0.59% 49.05%      0.13s  0.95%  runtime.mallocgcTinySC2
+     0.07s  0.51% 49.56%      0.48s  3.51%  database/sql.convertAssignRows
+     0.07s  0.51% 50.07%      0.07s  0.51%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     0.07s  0.51% 50.59%      0.08s  0.59%  runtime.casgstatus
+     0.07s  0.51% 51.10%      0.07s  0.51%  runtime.memclrNoHeapPointers
+     0.07s  0.51% 51.61%      0.07s  0.51%  runtime.nextFreeFast (inline)
+     0.06s  0.44% 52.05%      0.08s  0.59%  internal/strconv.ParseInt
+     0.06s  0.44% 52.49%      0.28s  2.05%  runtime.mapaccess2_faststr
+     0.06s  0.44% 52.93%      0.84s  6.15%  runtime.schedule
+     0.05s  0.37% 53.29%      0.15s  1.10%  github.com/goccy/go-json/internal/encoder/vm.appendStructKey (inline)
+     0.05s  0.37% 53.66%      0.12s  0.88%  runtime.mapaccess2_fast64
+     0.05s  0.37% 54.03%      0.38s  2.78%  runtime.netpoll
+     0.05s  0.37% 54.39%      0.15s  1.10%  runtime.selectgo
+     0.05s  0.37% 54.76%      0.12s  0.88%  time.Time.appendFormat
+     0.04s  0.29% 55.05%      0.64s  4.69%  bufio.(*Reader).Peek
+     0.04s  0.29% 55.34%      0.27s  1.98%  database/sql.(*Rows).nextLocked
+     0.04s  0.29% 55.64%      0.23s  1.68%  github.com/go-sql-driver/mysql.(*textRows).readRow
