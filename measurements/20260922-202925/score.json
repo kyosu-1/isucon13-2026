@@ -1,0 +1,78 @@
+{
+  "pass": true,
+  "score": 699501,
+  "error_count": 241,
+  "errors": [
+    {
+      "count": 240,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7740/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7565/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7585/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7722/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7725/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 6882,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 1867,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 1372,
+      "fail": 7832
+    },
+    "streamer-moderate": {
+      "success": 5438,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 6631,
+      "fail": 253
+    },
+    "viewer": {
+      "success": 3568,
+      "fail": 0
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 7832
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 253
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 179968,
+    "failed": 0
+  },
+  "viewers_completed": 3568,
+  "phases": {
+    "initialize_sec": 2.7,
+    "pretest_sec": 4.3,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 179968",
+    "売上: 699501"
+  ],
+  "dns_resolved": 179968,
+  "scenario_success": 25817,
+  "scenario_fail": 16170
+}

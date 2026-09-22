@@ -1,0 +1,2 @@
+    t     req newconn  fullhs      h2
+    0       0       0       0       0

@@ -1,0 +1,9 @@
+timestamp : 20260922-203052
+commit    : 3d2bc25  tools/analyze/timeline.py: 5 秒刻みの時系列（視聴者・予約失敗・CPU・新規接続）を並べる
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 同一構成で再計測（遅い回の採取 5）
+dirty     : 0 files uncommitted (webapp/ etc/)
