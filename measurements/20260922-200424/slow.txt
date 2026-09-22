@@ -1,0 +1,2 @@
+sudo: unable to resolve host ip-10-100-0-101: Name or service not known
+slow log is empty — make measure-on を実行してからベンチしてください

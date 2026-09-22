@@ -1,0 +1,87 @@
+{
+  "pass": true,
+  "score": 690793,
+  "error_count": 192,
+  "errors": [
+    {
+      "count": 191,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7733/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7766/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7536/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7561/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7699/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 7021,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 2404,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 1372,
+      "fail": 7909
+    },
+    "streamer-moderate": {
+      "success": 5689,
+      "fail": 1
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 6807,
+      "fail": 214
+    },
+    "viewer": {
+      "success": 3505,
+      "fail": 38
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 7909
+    },
+    "streamer-moderate-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 38
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 214
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 179912,
+    "failed": 0
+  },
+  "viewers_completed": 3505,
+  "phases": {
+    "initialize_sec": 2.7,
+    "pretest_sec": 4.3,
+    "load_sec": 60.1
+  },
+  "info": [
+    "timeout",
+    "名前解決成功数 179912",
+    "売上: 690793"
+  ],
+  "dns_resolved": 179912,
+  "scenario_success": 26857,
+  "scenario_fail": 16324
+}
