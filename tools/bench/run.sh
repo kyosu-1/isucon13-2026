@@ -62,6 +62,7 @@ echo "==> [1/5] ログ初期化・リソース記録開始"
 START_EPOCH="$(date +%s)"
 ssh "$ENTRY" "sudo truncate -s 0 /var/log/nginx/access.log /var/log/nginx/error.log"
 ssh "$DB_HOST" "sudo truncate -s 0 /var/log/mysql/slow.log 2>/dev/null || true"
+./tools/analyze/mysql-status.sh "$DB_HOST" snapshot > "$OUT/raw-mysql-status-before.txt" 2>/dev/null || true
 for h in "${APP_HOSTS_ARR[@]}"; do
   ssh "$h" "nohup sudo sh -c 'vmstat -t 1 150 > /tmp/vmstat.txt 2>&1' >/dev/null 2>&1 &
             nohup sudo sh -c 'LC_ALL=C pidstat -u 1 140 > /tmp/pidstat.txt 2>&1' >/dev/null 2>&1 &
@@ -117,6 +118,9 @@ for h in "${APP_HOSTS_ARR[@]}"; do
   ) &
 done
 ssh "$BENCH" "cat /tmp/vmstat.txt" > "$OUT/vmstat-$BENCH.txt" 2>/dev/null &
+( ./tools/analyze/mysql-status.sh "$DB_HOST" snapshot > "$OUT/raw-mysql-status-after.txt" 2>/dev/null \
+  && ./tools/analyze/mysql-status.sh diff "$OUT/raw-mysql-status-before.txt" "$OUT/raw-mysql-status-after.txt" > "$OUT/mysql-status.txt"; \
+  rm -f "$OUT/raw-mysql-status-before.txt" "$OUT/raw-mysql-status-after.txt" ) &
 ./tools/analyze/alp.sh "$ENTRY" > "$OUT/alp.txt" 2>&1 &
 ./tools/analyze/slow.sh "$DB_HOST" > "$OUT/slow.txt" 2>&1 &
 wait
