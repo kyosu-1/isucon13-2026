@@ -1,0 +1,107 @@
+{
+  "pass": true,
+  "score": 100938,
+  "error_count": 21,
+  "errors": [
+    {
+      "count": 10,
+      "msg": "[一般エラー] GET /api/livestream/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 5,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 3,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/livecomment: Post \"https://yokoN.u.isucon.local:N/api/livestream/N/livecomment\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/enter: Post \"https://mituruN.u.isucon.local:N/api/livestream/N/enter\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/enter: Post \"https://yasuhirotakahashiN.u.isucon.local:N/api/livestream/N/enter\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] GET /api/livestream/7522/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)",
+    "[一般エラー] GET /api/livestream/7524/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)",
+    "[一般エラー] POST /api/livestream/7522/livecomment/1028/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] GET /api/livestream/7528/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)",
+    "[一般エラー] GET /api/livestream/7532/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 947,
+      "fail": 66
+    },
+    "dns-watertorture-attack": {
+      "success": 52,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 247,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 878,
+      "fail": 67
+    },
+    "viewer-report": {
+      "success": 53,
+      "fail": 3
+    },
+    "viewer-spam": {
+      "success": 1007,
+      "fail": 7
+    },
+    "viewer": {
+      "success": 503,
+      "fail": 7
+    },
+    "aggressive-streamer-moderate-fail": {
+      "success": 0,
+      "fail": 66
+    },
+    "streamer-moderate-fail": {
+      "success": 0,
+      "fail": 67
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 7
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 3
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 7
+    }
+  },
+  "dns": {
+    "attackers": 4,
+    "resolved": 8445,
+    "failed": 7
+  },
+  "viewers_completed": 503,
+  "phases": {
+    "initialize_sec": 2.7,
+    "pretest_sec": 5.2,
+    "load_sec": 60.0
+  },
+  "info": [
+    "canceled",
+    "名前解決成功数 8445",
+    "売上: 100938"
+  ],
+  "dns_resolved": 8445,
+  "scenario_success": 3687,
+  "scenario_fail": 300
+}

@@ -1,0 +1,4 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+kworker/u4:4-flush-259:0       0.0
+kcompactd0                     0.0

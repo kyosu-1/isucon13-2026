@@ -1,0 +1,8 @@
+timestamp : 20260922-175321
+commit    : da518b6  moderate: 全ライブコメント取得→1件ずつ DELETE を、配信内の LIKE 一括 DELETE に
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : moderate 一括 DELETE
+dirty     : 0 files uncommitted (webapp/ etc/)
