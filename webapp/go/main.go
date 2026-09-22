@@ -128,6 +128,9 @@ func initializeHandler(c echo.Context) error {
 	if err := scores.reload(c.Request().Context(), dbConn); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload score cache: "+err.Error())
 	}
+	if err := ngWords.reload(c.Request().Context(), dbConn); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to reload ng word cache: "+err.Error())
+	}
 
 	c.Request().Header.Add("Content-Type", "application/json;charset=utf-8")
 	return c.JSON(http.StatusOK, InitializeResponse{
@@ -234,6 +237,10 @@ func main() {
 	}
 	if err := scores.reload(context.Background(), dbConn); err != nil {
 		e.Logger.Errorf("failed to load score cache: %v", err)
+		os.Exit(1)
+	}
+	if err := ngWords.reload(context.Background(), dbConn); err != nil {
+		e.Logger.Errorf("failed to load ng word cache: %v", err)
 		os.Exit(1)
 	}
 

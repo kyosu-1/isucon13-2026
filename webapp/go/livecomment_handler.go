@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sort"
 	"strconv"
 	"time"
 
@@ -113,8 +114,6 @@ func getLivecommentsHandler(c echo.Context) error {
 }
 
 func getNgwords(c echo.Context) error {
-	ctx := c.Request().Context()
-
 	if err := verifyUserSession(c); err != nil {
 		return err
 	}
@@ -129,19 +128,23 @@ func getNgwords(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "livestream_id in path must be integer")
 	}
 
-	// 読み取りだけなのでトランザクションを張らない（BEGIN/COMMIT の往復を減らす）
-	tx := dbConn
-
-	var ngWords []*NGWord
-	if err := sqlx.SelectContext(ctx, tx, &ngWords, "SELECT * FROM ng_words WHERE user_id = ? AND livestream_id = ? ORDER BY created_at DESC", userID, livestreamID); err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return c.JSON(http.StatusOK, []*NGWord{})
-		} else {
-			return echo.NewHTTPError(http.StatusInternalServerError, "failed to get NG words: "+err.Error())
+	// キャッシュから（元実装と同じく created_at 降順。無ければ null）
+	all := ngWords.forLivestream(int64(livestreamID))
+	var ngWordList []*NGWord
+	for i := range all {
+		if all[i].UserID == userID {
+			w := all[i]
+			ngWordList = append(ngWordList, &w)
 		}
 	}
+	sort.SliceStable(ngWordList, func(i, j int) bool {
+		if ngWordList[i].CreatedAt == ngWordList[j].CreatedAt {
+			return ngWordList[i].ID > ngWordList[j].ID
+		}
+		return ngWordList[i].CreatedAt > ngWordList[j].CreatedAt
+	})
 
-	return c.JSON(http.StatusOK, ngWords)
+	return c.JSON(http.StatusOK, ngWordList)
 }
 
 func postLivecommentHandler(c echo.Context) error {
@@ -182,27 +185,21 @@ func postLivecommentHandler(c echo.Context) error {
 		}
 	}
 
-	// スパム判定
-	var ngwords []*NGWord
-	if err := sqlx.SelectContext(ctx, tx, &ngwords, "SELECT id, user_id, livestream_id, word FROM ng_words WHERE user_id = ? AND livestream_id = ?", livestreamModel.UserID, livestreamModel.ID); err != nil && !errors.Is(err, sql.ErrNoRows) {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get NG words: "+err.Error())
-	}
-
-	var hitSpam int
-	for _, ngword := range ngwords {
-		query := `
-		SELECT COUNT(*)
-		FROM
-		(SELECT ? AS text) AS texts
-		INNER JOIN
-		(SELECT CONCAT('%', ?, '%')	AS pattern) AS patterns
-		ON texts.text LIKE patterns.pattern;
-		`
-		if err := sqlx.GetContext(ctx, tx, &hitSpam, query, req.Comment, ngword.Word); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "failed to get hitspam: "+err.Error())
+	// スパム判定（配信者が登録した NG ワードを含むか。LIKE '%word%' と同じ判定を Go で行う）
+	for _, ngword := range ngWords.forLivestream(livestreamModel.ID) {
+		if ngword.UserID != livestreamModel.UserID {
+			continue
 		}
-		c.Logger().Infof("[hitSpam=%d] comment = %s", hitSpam, req.Comment)
-		if hitSpam >= 1 {
+		hit, ok := likeContains(req.Comment, ngword.Word)
+		if !ok {
+			// ワイルドカードを含む語だけ SQL に任せる
+			var hitSpam int
+			if err := sqlx.GetContext(ctx, tx, &hitSpam, "SELECT (? LIKE CONCAT('%', ?, '%'))", req.Comment, ngword.Word); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "failed to get hitspam: "+err.Error())
+			}
+			hit = hitSpam >= 1
+		}
+		if hit {
 			return echo.NewHTTPError(http.StatusBadRequest, "このコメントがスパム判定されました")
 		}
 	}
@@ -352,11 +349,12 @@ func moderateHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "A streamer can't moderate livestreams that other streamers own")
 	}
 
+	ngWordCreatedAt := time.Now().Unix()
 	rs, err := tx.NamedExecContext(ctx, "INSERT INTO ng_words(user_id, livestream_id, word, created_at) VALUES (:user_id, :livestream_id, :word, :created_at)", &NGWord{
 		UserID:       int64(userID),
 		LivestreamID: int64(livestreamID),
 		Word:         req.NGWord,
-		CreatedAt:    time.Now().Unix(),
+		CreatedAt:    ngWordCreatedAt,
 	})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to insert new NG word: "+err.Error())
@@ -390,6 +388,7 @@ func moderateHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
 	scores.add(int64(livestreamID), -deletedTips)
+	ngWords.add(NGWord{ID: wordID, UserID: int64(userID), LivestreamID: int64(livestreamID), Word: req.NGWord, CreatedAt: ngWordCreatedAt})
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
 		"word_id": wordID,

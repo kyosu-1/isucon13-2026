@@ -407,3 +407,54 @@ func (sc *scoreCache) userRank(name string) int64 {
 	}
 	return rank
 }
+
+// ---- NG ワード（配信ごと。モデレーションで増えるだけ） ----
+
+type ngWordCache struct {
+	mu           sync.RWMutex
+	byLivestream map[int64][]NGWord
+}
+
+var ngWords = &ngWordCache{byLivestream: map[int64][]NGWord{}}
+
+func (nc *ngWordCache) reload(ctx context.Context, db *sqlx.DB) error {
+	var rows []NGWord
+	if err := db.SelectContext(ctx, &rows, "SELECT * FROM ng_words ORDER BY id"); err != nil {
+		return err
+	}
+	m := make(map[int64][]NGWord)
+	for _, w := range rows {
+		m[w.LivestreamID] = append(m[w.LivestreamID], w)
+	}
+	nc.mu.Lock()
+	nc.byLivestream = m
+	nc.mu.Unlock()
+	return nil
+}
+
+// 配信の NG ワード（登録順）。呼び出し側で変更しないこと
+func (nc *ngWordCache) forLivestream(livestreamID int64) []NGWord {
+	nc.mu.RLock()
+	defer nc.mu.RUnlock()
+	return nc.byLivestream[livestreamID]
+}
+
+// 追加（DB コミット後に呼ぶ）。スライスは差し替える（読み手はコピーを持ち続けてよい）
+func (nc *ngWordCache) add(w NGWord) {
+	nc.mu.Lock()
+	old := nc.byLivestream[w.LivestreamID]
+	ws := make([]NGWord, 0, len(old)+1)
+	ws = append(ws, old...)
+	ws = append(ws, w)
+	nc.byLivestream[w.LivestreamID] = ws
+	nc.mu.Unlock()
+}
+
+// MySQL の LIKE '%word%'（utf8mb4_bin なのでバイト単位の完全一致）と同じ判定。
+// ワイルドカード（% _ \）を含む語は LIKE の意味が変わるので ok=false を返し、呼び出し側で SQL に任せる
+func likeContains(text, word string) (hit bool, ok bool) {
+	if strings.ContainsAny(word, `%_\`) {
+		return false, false
+	}
+	return strings.Contains(text, word), true
+}
