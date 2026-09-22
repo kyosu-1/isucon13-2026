@@ -8,3 +8,5 @@ ISUCON13_POWERDNS_SUBDOMAIN_ADDRESS="__ISU3_IP__"
 ISUCON13_POWERDNS_DISABLED="false"
 # 配信者サブドメイン（初期ユーザー含む）の A レコードは名前のハッシュでこの中から。pipe 等は上（isu3）
 ISUCON13_DNS_USER_ADDRESS="__ISU1_IP__,__ISU2_IP__,__ISU3_IP__,__ISU2_IP__,__ISU3_IP__"
+# GC の頻度を下げる（ヒープは数百 MB、メモリは 4GB）
+GOGC=400
