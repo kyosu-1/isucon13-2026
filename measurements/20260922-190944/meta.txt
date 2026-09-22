@@ -1,0 +1,9 @@
+timestamp : 20260922-190944
+commit    : 658cc87  bench: 424947 ANALYZE TABLE 後（差なし → 統計ではない）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : MySQL 再起動直後（速い方の STATUS 増分を取る）
+dirty     : 0 files uncommitted (webapp/ etc/)
