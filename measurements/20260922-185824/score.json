@@ -1,0 +1,79 @@
+{
+  "pass": true,
+  "score": 425458,
+  "error_count": 154,
+  "errors": [
+    {
+      "count": 153,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7565/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7526/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7705/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7741/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7919/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 5839,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 1828,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 1372,
+      "fail": 5029
+    },
+    "streamer-moderate": {
+      "success": 3603,
+      "fail": 0
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 5673,
+      "fail": 167
+    },
+    "viewer": {
+      "success": 2185,
+      "fail": 0
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 5029
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 167
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 179340,
+    "failed": 0
+  },
+  "viewers_completed": 2185,
+  "phases": {
+    "initialize_sec": 2.8,
+    "pretest_sec": 4.4,
+    "load_sec": 60.0
+  },
+  "info": [
+    "timeout",
+    "名前解決成功数 179340",
+    "売上: 425458"
+  ],
+  "dns_resolved": 179340,
+  "scenario_success": 20559,
+  "scenario_fail": 10392
+}

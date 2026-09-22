@@ -1,0 +1,9 @@
+timestamp : 20260922-185824
+commit    : 1c0ab05  bench: 479001 再起動試験後（3台再起動 → 全サービス自動起動 → pass、+14%）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : 再起動なしで再計測（再起動後 +14% の確認）
+dirty     : 0 files uncommitted (webapp/ etc/)

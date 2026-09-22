@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+nginx                        113.9
+pidstat                        0.7
+landscape-sysin                0.5
+rcu_sched                      0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+systemd-logind                 0.0
+systemd-journal                0.0
+systemd                        0.0
+sshd                           0.0
+kworker/u4:3-events_power_efficient       0.0
+kworker/u4:2-events_unbound       0.0
+kworker/u4:0-writeback         0.0
+kworker/u4:0-events_unbound       0.0
+kworker/0:0-events             0.0
