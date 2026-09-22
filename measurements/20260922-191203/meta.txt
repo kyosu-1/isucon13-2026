@@ -1,0 +1,9 @@
+timestamp : 20260922-191203
+commit    : 1d86579  bench: ベンチプロセスを cgroup で MemoryMax=8G に制限（本番の ECS 8 vCPU / 8 GB に合わせる）、ピーク RSS を記録
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : ベンチ機メモリ 8GB 制限（本番相当）
+dirty     : 0 files uncommitted (webapp/ etc/)
