@@ -409,10 +409,9 @@ func (sc *scoreCache) userRank(name string) int64 {
 type ngWordCache struct {
 	mu           sync.RWMutex
 	byLivestream map[int64][]NGWord
-	byUser       map[int64][]NGWord // 配信者ごと（全配信の NG ワード。スパム判定の実験用）
 }
 
-var ngWords = &ngWordCache{byLivestream: map[int64][]NGWord{}, byUser: map[int64][]NGWord{}}
+var ngWords = &ngWordCache{byLivestream: map[int64][]NGWord{}}
 
 func (nc *ngWordCache) reload(ctx context.Context, db *sqlx.DB) error {
 	var rows []NGWord
@@ -420,23 +419,13 @@ func (nc *ngWordCache) reload(ctx context.Context, db *sqlx.DB) error {
 		return err
 	}
 	m := make(map[int64][]NGWord)
-	mu := make(map[int64][]NGWord)
 	for _, w := range rows {
 		m[w.LivestreamID] = append(m[w.LivestreamID], w)
-		mu[w.UserID] = append(mu[w.UserID], w)
 	}
 	nc.mu.Lock()
 	nc.byLivestream = m
-	nc.byUser = mu
 	nc.mu.Unlock()
 	return nil
-}
-
-// 配信者の全配信の NG ワード（登録順）。呼び出し側で変更しないこと
-func (nc *ngWordCache) forUser(userID int64) []NGWord {
-	nc.mu.RLock()
-	defer nc.mu.RUnlock()
-	return nc.byUser[userID]
 }
 
 // 配信の NG ワード（登録順）。呼び出し側で変更しないこと
@@ -454,11 +443,6 @@ func (nc *ngWordCache) add(w NGWord) {
 	ws = append(ws, old...)
 	ws = append(ws, w)
 	nc.byLivestream[w.LivestreamID] = ws
-	oldU := nc.byUser[w.UserID]
-	us := make([]NGWord, 0, len(oldU)+1)
-	us = append(us, oldU...)
-	us = append(us, w)
-	nc.byUser[w.UserID] = us
 	nc.mu.Unlock()
 }
 
