@@ -53,7 +53,7 @@ SUBJECT="$(git log -1 --format=%s 2>/dev/null || echo '-')"
   echo "dns_host  : $DNS_HOST ($TARGET_IP)"
   echo "app_hosts : ${APP_HOSTS_ARR[*]}"
   echo "db_host   : $DB_HOST"
-  echo "bench     : $BENCH ($BENCH_IP)"
+  echo "bench     : $BENCH ($BENCH_IP) MemoryMax=${BENCH_MEMORY_MAX:-8G}"
   echo "note      : $NOTE"
   echo "dirty     : $(git status --porcelain -- webapp etc | wc -l | tr -d ' ') files uncommitted (webapp/ etc/)"
 } > "$OUT/meta.txt"
@@ -92,7 +92,11 @@ if [ -n "${PPROF_HOST:-}" ]; then
   PPROF_PID=$!
 fi
 set +e
-ssh "$BENCH" "cd /home/isucon && sudo rm -f /tmp/result.json /tmp/staff.log /tmp/contestant.log && sudo -u isucon ./bench run --enable-ssl \
+# 本番のベンチマーカーは ECS（8 vCPU / 8 GB）。ベンチ機 c5.2xlarge は 8 vCPU / 16 GB なので、
+# メモリだけ cgroup で 8 GB に制限して本番相当にする（swap なし）。ピーク RSS は /usr/bin/time で bench.log に残す
+ssh "$BENCH" "cd /home/isucon && sudo rm -f /tmp/result.json /tmp/staff.log /tmp/contestant.log && \
+  sudo systemd-run --scope -q -p MemoryMax=${BENCH_MEMORY_MAX:-8G} -p MemorySwapMax=0 \
+  sudo -u isucon /usr/bin/time -f 'bench peak RSS: %M KB, elapsed %e s' ./bench run --enable-ssl \
   --nameserver $TARGET_IP $WEBAPP_FLAGS --target https://pipe.u.isucon.local \
   --result-path /tmp/result.json --staff-log-path /tmp/staff.log --contestant-log-path /tmp/contestant.log" \
   > "$OUT/bench.log" 2>&1

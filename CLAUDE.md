@@ -29,6 +29,9 @@ AIエージェント（Claude Code）が主体で「計測 → 改善」のル�
 - 競技サーバーは **c5.large（2 vCPU / 4GB）× 3台**。**この3台だけ**で処理する。
   - isuenv では `isucon13-1..3` が競技サーバー、`isucon13-4`（c5.2xlarge）は**ベンチマーカー専用**。
     ベンチ機にアプリの処理を載せるのは禁止（外部リソースの利用にあたる）。
+  - 本番のベンチマーカーは **ECS の 8 vCPU / 8 GB**。ベンチ機 c5.2xlarge は 8 vCPU / 16 GB なので、
+    `make bench` はベンチプロセスを cgroup で **MemoryMax=8G** に制限して回す（`tools/bench/run.sh`）。
+    ベンチ機のインスタンスタイプは途中で変えない（前後のスコアが比べられなくなる）。
   - 役割分担は `etc/isuN/services` が正（`make deploy` がそのとおりに enable/disable する）。
 - ベンチマーカーは **`isucon13-1` の DNS(53/UDP) に名前解決**し、得られたIPに HTTPS(443) でアクセスする。
   名前解決の結果は**3台のIPのどれか**でなければならない（`--webapp` で渡している）。
