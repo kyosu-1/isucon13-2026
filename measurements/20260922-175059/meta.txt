@@ -1,0 +1,8 @@
+timestamp : 20260922-175059
+commit    : 2ed5593  配信をメモリキャッシュ（fillLivecomment/Reaction、livecomment 投稿・報告の配信検索）
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : 配信のメモリキャッシュ
+dirty     : 0 files uncommitted (webapp/ etc/)

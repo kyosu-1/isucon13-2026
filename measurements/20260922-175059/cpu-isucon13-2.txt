@@ -1,0 +1,4 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+ksoftirqd/1                    0.0
+jbd2/nvme0n1p1-8               0.0

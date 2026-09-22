@@ -1,0 +1,90 @@
+{
+  "pass": true,
+  "score": 115960,
+  "error_count": 6,
+  "errors": [
+    {
+      "count": 3,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] GET /api/livestream/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/livestream/N/moderate: Post \"https://endoyuiN.u.isucon.local:N/api/livestream/N/moderate\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/icon: Get \"https://pipe.u.isucon.local:N/api/user/<name>/icon\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7527/livecomment/1066/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] GET /api/livestream/7527/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:200, actual:500)",
+    "[一般エラー] POST /api/livestream/7529/livecomment/1116/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7522/livecomment/1012/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[リクエストタイムアウト] POST /api/livestream/7522/moderate: Post \"https://endoyui0.u.isucon.local:443/api/livestream/7522/moderate\": context deadline exceeded (Client.Timeout exceeded while awaiting headers): タイムアウトによりリクエスト失敗"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 15,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 47,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 202,
+      "fail": 0
+    },
+    "streamer-moderate": {
+      "success": 181,
+      "fail": 1
+    },
+    "viewer-report": {
+      "success": 47,
+      "fail": 9
+    },
+    "viewer-spam": {
+      "success": 17,
+      "fail": 0
+    },
+    "viewer": {
+      "success": 587,
+      "fail": 5
+    },
+    "streamer-moderate-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 5
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 9
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 7509,
+    "failed": 10
+  },
+  "viewers_completed": 587,
+  "phases": {
+    "initialize_sec": 2.6,
+    "pretest_sec": 5.3,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 7509",
+    "売上: 115960"
+  ],
+  "dns_resolved": 7509,
+  "scenario_success": 1096,
+  "scenario_fail": 30
+}

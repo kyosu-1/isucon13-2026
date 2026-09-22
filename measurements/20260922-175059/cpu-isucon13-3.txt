@@ -1,0 +1,8 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+vmstat                         0.0
+systemd-logind                 0.0
+rcu_sched                      0.0
+kworker/0:3-events             0.0
+cron                           0.0
+chronyd                        0.0
