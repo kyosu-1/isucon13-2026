@@ -1,0 +1,102 @@
+{
+  "pass": true,
+  "score": 25624,
+  "error_count": 8,
+  "errors": [
+    {
+      "count": 4,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] GET /api/livestream/N/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] POST /api/register: Post \"https://pipe.u.isucon.local:N/api/register\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] GET /api/tag: Get \"https://pipe.u.isucon.local:N/api/tag\": read udp N.N.N.N:N->N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7528/livecomment/1048/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7535/livecomment/1136/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7528/livecomment/1049/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)",
+    "[一般エラー] POST /api/livestream/7542/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7546/livecomment/1336/report へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:404)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 29,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 34,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 182,
+      "fail": 1
+    },
+    "streamer-moderate": {
+      "success": 134,
+      "fail": 1
+    },
+    "viewer-report": {
+      "success": 49,
+      "fail": 7
+    },
+    "viewer-spam": {
+      "success": 30,
+      "fail": 1
+    },
+    "viewer": {
+      "success": 127,
+      "fail": 5
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "streamer-moderate-fail": {
+      "success": 0,
+      "fail": 1
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 5
+    },
+    "viewer-report-fail": {
+      "success": 0,
+      "fail": 7
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 1
+    }
+  },
+  "dns": {
+    "attackers": 3,
+    "resolved": 5698,
+    "failed": 2
+  },
+  "viewers_completed": 127,
+  "phases": {
+    "initialize_sec": 2.5,
+    "pretest_sec": 5.8,
+    "load_sec": 60.0
+  },
+  "info": [
+    "名前解決成功数 5698",
+    "売上: 25624"
+  ],
+  "dns_resolved": 5698,
+  "scenario_success": 585,
+  "scenario_fail": 30
+}

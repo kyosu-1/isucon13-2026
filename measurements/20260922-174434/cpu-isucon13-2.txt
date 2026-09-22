@@ -1,0 +1,6 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+sshd                           0.0
+snapd                          0.0
+multipathd                     0.0
+kworker/u4:1-ext4-rsv-conversion       0.0

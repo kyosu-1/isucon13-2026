@@ -1,0 +1,7 @@
+COMMAND                   AVG_CPU%
+pidstat                        0.3
+vmstat                         0.0
+systemd                        0.0
+snapd                          0.0
+polkitd                        0.0
+amazon-ssm-agen                0.0

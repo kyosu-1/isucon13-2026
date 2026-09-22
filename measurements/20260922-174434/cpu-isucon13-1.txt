@@ -1,0 +1,16 @@
+COMMAND                   AVG_CPU%
+mysqld                        87.7
+isupipe                       39.1
+nginx                         11.1
+pdns_server                    6.6
+systemd-journal                1.0
+pdnsutil                       0.6
+pidstat                        0.5
+rsyslogd                       0.4
+rcu_sched                      0.1
+ksoftirqd/1                    0.1
+ksoftirqd/0                    0.1
+jbd2/nvme0n1p1-8               0.1
+systemd                        0.0
+mysql                          0.0
+kworker/u4:2+flush-259:0       0.0

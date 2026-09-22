@@ -1,0 +1,8 @@
+timestamp : 20260922-174434
+commit    : 5436936  ユーザー・テーマ・アイコンをメモリキャッシュ、GET icon は If-None-Match で 304
+entry     : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-1
+bench     : isucon13-4 (10.100.0.186)
+note      : ユーザー/アイコンのメモリキャッシュ
+dirty     : 0 files uncommitted (webapp/ etc/)

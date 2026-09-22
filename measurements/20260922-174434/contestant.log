@@ -1,0 +1,14 @@
+2026-09-22T08:44:36.403Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T08:44:36.403Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T08:44:36.403Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T08:44:36.403Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T08:44:38.931Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T08:44:44.726Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T08:44:44.726Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T08:44:46.736Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T08:45:44.727Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T08:45:45.532Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T08:45:45.532Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T08:45:45.533Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T08:45:45.533Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T08:45:45.533Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 127}
