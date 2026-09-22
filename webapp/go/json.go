@@ -18,6 +18,8 @@ func (goJSONSerializer) Serialize(c echo.Context, i interface{}, indent string) 
 	if indent != "" {
 		enc.SetIndent("", indent)
 	}
+	// < > & を \u003c 等にする HTML エスケープをやめる（JSON としては同値。pprof で appendNormalizedHTMLString が 17%）
+	enc.SetEscapeHTML(false)
 	return enc.Encode(i)
 }
 
