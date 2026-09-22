@@ -28,7 +28,7 @@ user		= mysql
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= 127.0.0.1
+bind-address		= 0.0.0.0
 mysqlx-bind-address	= 127.0.0.1
 #
 # * Fine Tuning
@@ -74,5 +74,19 @@ log_error = /var/log/mysql/error.log
 # log_bin			= /var/log/mysql/mysql-bin.log
 # binlog_expire_logs_seconds	= 2592000
 max_binlog_size   = 100M
+
+# ---- ISUCON チューニング ----
+# binlog は使わない（COMMIT ごとの書き込みが減る）
+disable-log-bin
+# COMMIT ごとの fsync をやめる（OS クラッシュ時に最大1秒分を失うが、再起動(clean)では失わない）
+innodb_flush_log_at_trx_commit = 2
+sync_binlog = 0
+# データは数十MB。バッファプールに全部載せる
+innodb_buffer_pool_size = 1G
+innodb_redo_log_capacity = 512M
+innodb_flush_method = O_DIRECT
+max_connections = 1024
+# 同時実行の要らない機能
+performance_schema = OFF
 # binlog_do_db		= include_database_name
 # binlog_ignore_db	= include_database_name

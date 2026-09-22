@@ -1,2 +1,3 @@
 # このノードで enable するサービス（deploy.sh が読む。書かれていない管理対象は disable）
-# 未使用（今は何も動かさない）
+# MySQL 専用
+mysql

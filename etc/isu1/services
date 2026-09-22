@@ -1,2 +1,3 @@
 # このノードで enable するサービス（deploy.sh が読む。書かれていない管理対象は disable）
-nginx mysql pdns isupipe-go
+# 入口: nginx + アプリ + DNS。MySQL は isucon13-2
+nginx pdns isupipe-go
