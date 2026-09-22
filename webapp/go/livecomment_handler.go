@@ -249,6 +249,7 @@ func postLivecommentHandler(c echo.Context) error {
 	if err := tx.Commit(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
+	scores.add(int64(livestreamID), req.Tip)
 
 	return c.JSON(http.StatusCreated, livecomment)
 }
@@ -387,7 +388,13 @@ func moderateHandler(c echo.Context) error {
 
 	// NGワードにヒットする過去の投稿も全削除する
 	// （元実装は全ライブコメントを取ってきて 1件ずつ DELETE していた。LIKE の意味は同じ）
+	var deletedTips int64
 	for _, ngword := range ngwords {
+		var t int64
+		if err := tx.GetContext(ctx, &t, "SELECT IFNULL(SUM(tip), 0) FROM livecomments WHERE livestream_id = ? AND comment LIKE CONCAT('%', ?, '%')", livestreamID, ngword.Word); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "failed to sum old livecomments that hit spams: "+err.Error())
+		}
+		deletedTips += t
 		if _, err := tx.ExecContext(ctx, "DELETE FROM livecomments WHERE livestream_id = ? AND comment LIKE CONCAT('%', ?, '%')", livestreamID, ngword.Word); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "failed to delete old livecomments that hit spams: "+err.Error())
 		}
@@ -396,6 +403,7 @@ func moderateHandler(c echo.Context) error {
 	if err := tx.Commit(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to commit: "+err.Error())
 	}
+	scores.add(int64(livestreamID), -deletedTips)
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
 		"word_id": wordID,

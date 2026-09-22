@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
-	"sort"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -86,36 +85,8 @@ func getUserStatisticsHandler(c echo.Context) error {
 		}
 	}
 
-	// ランク算出（全ユーザー×2クエリの N+1 を、集約2本の1クエリに）
-	var rows []struct {
-		Name  string `db:"name"`
-		Score int64  `db:"score"`
-	}
-	if err := tx.SelectContext(ctx, &rows, `
-		SELECT u.name AS name, IFNULL(r.cnt, 0) + IFNULL(t.tips, 0) AS score
-		FROM users u
-		LEFT JOIN (
-			SELECT l.user_id, COUNT(*) AS cnt FROM reactions r INNER JOIN livestreams l ON l.id = r.livestream_id GROUP BY l.user_id
-		) r ON r.user_id = u.id
-		LEFT JOIN (
-			SELECT l.user_id, IFNULL(SUM(c.tip), 0) AS tips FROM livecomments c INNER JOIN livestreams l ON l.id = c.livestream_id GROUP BY l.user_id
-		) t ON t.user_id = u.id`); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get user ranking: "+err.Error())
-	}
-	ranking := make(UserRanking, 0, len(rows))
-	for _, r := range rows {
-		ranking = append(ranking, UserRankingEntry{Username: r.Name, Score: r.Score})
-	}
-	sort.Sort(ranking)
-
-	var rank int64 = 1
-	for i := len(ranking) - 1; i >= 0; i-- {
-		entry := ranking[i]
-		if entry.Username == username {
-			break
-		}
-		rank++
-	}
+	// ランク算出（メモリのスコアから）
+	rank := scores.userRank(username)
 
 	// リアクション数
 	var totalReactions int64
@@ -196,32 +167,8 @@ func getLivestreamStatisticsHandler(c echo.Context) error {
 		}
 	}
 
-	// ランク算出（全配信×2クエリの N+1 を、集約2本の1クエリに）
-	var rows []struct {
-		ID    int64 `db:"id"`
-		Score int64 `db:"score"`
-	}
-	if err := tx.SelectContext(ctx, &rows, `
-		SELECT l.id AS id, IFNULL(r.cnt, 0) + IFNULL(t.tips, 0) AS score
-		FROM livestreams l
-		LEFT JOIN (SELECT livestream_id, COUNT(*) AS cnt FROM reactions GROUP BY livestream_id) r ON r.livestream_id = l.id
-		LEFT JOIN (SELECT livestream_id, IFNULL(SUM(tip), 0) AS tips FROM livecomments GROUP BY livestream_id) t ON t.livestream_id = l.id`); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get livestream ranking: "+err.Error())
-	}
-	ranking := make(LivestreamRanking, 0, len(rows))
-	for _, r := range rows {
-		ranking = append(ranking, LivestreamRankingEntry{LivestreamID: r.ID, Score: r.Score})
-	}
-	sort.Sort(ranking)
-
-	var rank int64 = 1
-	for i := len(ranking) - 1; i >= 0; i-- {
-		entry := ranking[i]
-		if entry.LivestreamID == livestreamID {
-			break
-		}
-		rank++
-	}
+	// ランク算出（メモリのスコアから）
+	rank := scores.livestreamRank(livestreamID)
 
 	// 視聴者数算出
 	var viewersCount int64

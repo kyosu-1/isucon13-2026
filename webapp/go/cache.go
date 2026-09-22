@@ -11,6 +11,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 
@@ -300,4 +301,109 @@ func livestreamByID(ctx context.Context, tx *sqlx.Tx, id int64) (LivestreamModel
 		return LivestreamModel{}, err
 	}
 	return m, nil
+}
+
+// ---- ランキング用スコア（配信ごと: リアクション数 + 投げ銭合計。ユーザーは自分の配信の合計） ----
+//
+// 統計 API のランキングは全配信/全ユーザーのスコアを集計してソートしていた（1回 150〜230ms、DB 時間の 33%）。
+// スコアの増減はリアクション投稿・ライブコメント投稿・モデレーションによる削除だけなので、メモリで数える。
+// DB が正。起動時と initialize で DB から作り直す。更新は DB コミット後。
+
+type scoreCache struct {
+	mu   sync.RWMutex
+	ls   map[int64]int64 // livestream_id -> score
+	user map[int64]int64 // user_id -> score
+}
+
+var scores = &scoreCache{ls: map[int64]int64{}, user: map[int64]int64{}}
+
+func (sc *scoreCache) reload(ctx context.Context, db *sqlx.DB) error {
+	type row struct {
+		LivestreamID int64 `db:"livestream_id"`
+		UserID       int64 `db:"user_id"`
+		Score        int64 `db:"score"`
+	}
+	var rows []row
+	if err := db.SelectContext(ctx, &rows, `
+		SELECT l.id AS livestream_id, l.user_id AS user_id, IFNULL(r.cnt, 0) + IFNULL(t.tips, 0) AS score
+		FROM livestreams l
+		LEFT JOIN (SELECT livestream_id, COUNT(*) AS cnt FROM reactions GROUP BY livestream_id) r ON r.livestream_id = l.id
+		LEFT JOIN (SELECT livestream_id, IFNULL(SUM(tip), 0) AS tips FROM livecomments GROUP BY livestream_id) t ON t.livestream_id = l.id`); err != nil {
+		return err
+	}
+	ls := make(map[int64]int64, len(rows))
+	user := make(map[int64]int64)
+	for _, r := range rows {
+		ls[r.LivestreamID] = r.Score
+		user[r.UserID] += r.Score
+	}
+	sc.mu.Lock()
+	sc.ls, sc.user = ls, user
+	sc.mu.Unlock()
+	return nil
+}
+
+// 配信のスコアに delta を足す（DB コミット後に呼ぶ）。オーナーのスコアにも反映
+func (sc *scoreCache) add(livestreamID int64, delta int64) {
+	if delta == 0 {
+		return
+	}
+	owner := int64(0)
+	if m, ok := livestreams.get(livestreamID); ok {
+		owner = m.UserID
+	}
+	sc.mu.Lock()
+	sc.ls[livestreamID] += delta
+	if owner != 0 {
+		sc.user[owner] += delta
+	}
+	sc.mu.Unlock()
+}
+
+// 配信のランク（スコア降順。同点は id の小さい方が上位 = 元実装と同じ）
+func (sc *scoreCache) livestreamRank(id int64) int64 {
+	livestreams.mu.RLock()
+	ids := make([]int64, 0, len(livestreams.byID))
+	for k := range livestreams.byID {
+		ids = append(ids, k)
+	}
+	livestreams.mu.RUnlock()
+
+	sc.mu.RLock()
+	ranking := make(LivestreamRanking, 0, len(ids))
+	for _, k := range ids {
+		ranking = append(ranking, LivestreamRankingEntry{LivestreamID: k, Score: sc.ls[k]})
+	}
+	sc.mu.RUnlock()
+	sort.Sort(ranking)
+	var rank int64 = 1
+	for i := len(ranking) - 1; i >= 0; i-- {
+		if ranking[i].LivestreamID == id {
+			break
+		}
+		rank++
+	}
+	return rank
+}
+
+// ユーザーのランク（スコア降順。同点は名前の小さい方が上位 = 元実装と同じ）
+func (sc *scoreCache) userRank(name string) int64 {
+	users.mu.RLock()
+	entries := make([]UserRankingEntry, 0, len(users.byID))
+	sc.mu.RLock()
+	for id, cu := range users.byID {
+		entries = append(entries, UserRankingEntry{Username: cu.User.Name, Score: sc.user[id]})
+	}
+	sc.mu.RUnlock()
+	users.mu.RUnlock()
+	ranking := UserRanking(entries)
+	sort.Sort(ranking)
+	var rank int64 = 1
+	for i := len(ranking) - 1; i >= 0; i-- {
+		if ranking[i].Username == name {
+			break
+		}
+		rank++
+	}
+	return rank
 }
