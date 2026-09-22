@@ -386,29 +386,10 @@ func moderateHandler(c echo.Context) error {
 	}
 
 	// NGワードにヒットする過去の投稿も全削除する
+	// （元実装は全ライブコメントを取ってきて 1件ずつ DELETE していた。LIKE の意味は同じ）
 	for _, ngword := range ngwords {
-		// ライブコメント一覧取得
-		var livecomments []*LivecommentModel
-		if err := tx.SelectContext(ctx, &livecomments, "SELECT * FROM livecomments"); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "failed to get livecomments: "+err.Error())
-		}
-
-		for _, livecomment := range livecomments {
-			query := `
-			DELETE FROM livecomments
-			WHERE
-			id = ? AND
-			livestream_id = ? AND
-			(SELECT COUNT(*)
-			FROM
-			(SELECT ? AS text) AS texts
-			INNER JOIN
-			(SELECT CONCAT('%', ?, '%')	AS pattern) AS patterns
-			ON texts.text LIKE patterns.pattern) >= 1;
-			`
-			if _, err := tx.ExecContext(ctx, query, livecomment.ID, livestreamID, livecomment.Comment, ngword.Word); err != nil {
-				return echo.NewHTTPError(http.StatusInternalServerError, "failed to delete old livecomments that hit spams: "+err.Error())
-			}
+		if _, err := tx.ExecContext(ctx, "DELETE FROM livecomments WHERE livestream_id = ? AND comment LIKE CONCAT('%', ?, '%')", livestreamID, ngword.Word); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "failed to delete old livecomments that hit spams: "+err.Error())
 		}
 	}
 
