@@ -1,0 +1,24 @@
+2026-09-22T11:23:03.848Z	info	isupipe-benchmarker	SSL接続が有効になっています
+2026-09-22T11:23:03.848Z	info	isupipe-benchmarker	静的ファイルチェックを行います
+2026-09-22T11:23:03.848Z	info	isupipe-benchmarker	静的ファイルチェックが完了しました
+2026-09-22T11:23:03.848Z	info	isupipe-benchmarker	webappの初期化を行います
+2026-09-22T11:23:06.599Z	info	isupipe-benchmarker	ベンチマーク走行前のデータ整合性チェックを行います
+2026-09-22T11:23:10.947Z	info	isupipe-benchmarker	整合性チェックが成功しました
+2026-09-22T11:23:10.947Z	info	isupipe-benchmarker	ベンチマーク走行を開始します
+2026-09-22T11:23:12.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 3}
+2026-09-22T11:23:14.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 4}
+2026-09-22T11:23:16.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 6}
+2026-09-22T11:23:18.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 9}
+2026-09-22T11:23:20.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 13}
+2026-09-22T11:23:22.958Z	info	isupipe-benchmarker	DNS水責め負荷が上昇します	{"parallelis": 15}
+2026-09-22T11:24:10.947Z	info	isupipe-benchmarker	ベンチマーク走行を停止します
+2026-09-22T11:24:10.949Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "fmaeda0", "livestream_id": 7562, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:24:10.949Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "kyamazaki1", "livestream_id": 8410, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:24:10.949Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "tomoyayoshida0", "livestream_id": 8030, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:24:10.949Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "naotosasaki1", "livestream_id": 8400, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:24:10.949Z	warn	isupipe-benchmarker	ライブコメントを配信に投稿できないため、視聴者が離脱します	{"viewer": "shoheisato0", "livestream_id": 7606, "error": "ベンチマーク走行が継続できないエラーが発生しました"}
+2026-09-22T11:24:11.313Z	info	isupipe-benchmarker	ベンチマーク走行終了
+2026-09-22T11:24:11.313Z	info	isupipe-benchmarker	最終チェックを実施します
+2026-09-22T11:24:11.314Z	info	isupipe-benchmarker	最終チェックが成功しました
+2026-09-22T11:24:11.314Z	info	isupipe-benchmarker	重複排除したログを以下に出力します
+2026-09-22T11:24:11.321Z	info	isupipe-benchmarker	配信を最後まで視聴できた視聴者数	{"viewers": 3380}

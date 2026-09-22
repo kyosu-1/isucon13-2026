@@ -1,0 +1,9 @@
+timestamp : 20260922-202301
+commit    : a5678dd  実験: pipe のラウンドロビンを isu3:isu2 = 3:1 に（isu1 は app で最も忙しく、isu3 が 31〜52% で余っていた）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186) MemoryMax=8G
+note      : 実験: pipe RR isu3:isu2=3:1
+dirty     : 0 files uncommitted (webapp/ etc/)
