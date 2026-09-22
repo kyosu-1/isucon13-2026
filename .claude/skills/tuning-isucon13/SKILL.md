@@ -81,15 +81,31 @@ DB を別ノードに出したら init.sh の接続先も変わる（env.sh 経�
 ### 8. サーバーの状態を変えたら
 
 - ミドルウェアを再起動したらアプリも再起動する。`make deploy` がやる。
-- pdns は MySQL(isudns) に依存。MySQL を別ノードに出すなら `gmysql-host` も変える。
+- MySQL を別ノードに出すときは `tools/setup/mysql-remote-users.sh`（AMI のユーザーは localhost 限定）。
+  `isupipe-go.service` の `Requires=mysql.service` は外してある（mysql の無いノードで起動できない）。
+- 現在の構成: **isu1 = アプリ(:8080) + アプリ内 DNS(:53) / isu2 = MySQL / isu3 = nginx**。
+  DNS の A レコードは isu3 を指す（`etc/isu1/home/env.sh` の `__ISU3_IP__`）。ベンチの `--nameserver` は isu1（`DNS_HOST`）。
+- アプリはメモリに状態を持つので **1 プロセスだけ**（users / tags / livestreams / scores / ng_words / sessions / icons）。
+  すべて起動時と initialize で DB（アイコンはローカルファイル）から作り直す。
 
 ## ISUPipe で実測して分かったこと（ベンチを観測して得たもの）
 
 | 観測 | 意味 | 根拠 |
 | --- | --- | --- |
 | 素の初期状態: 3545 点、名前解決 2311 回、水責め並列数 2 | | measurements/20260922-081630-raw-baseline |
-
-（改善のたびに追記する）
+| `POST /api/icon` の DELETE+INSERT が並行でデッドロック（500 ×24） | user_id の二次索引にギャップロック。UNIQUE + upsert に | 20260922-173149 |
+| initialize 15s → 2.6s（binlog 停止・flush_log_at_trx_commit=2） | スコアは動かないが 42 秒制限に余裕 | 20260922-173749 |
+| moderate を速くすると報告一覧が 500 | 消えたコメントの報告が fill で no rows。JOIN で除外 | 20260922-175321 |
+| ユーザー名は大文字を含む（`wkGQKEWut2`）。DNS は大文字小文字を無視 | 自前 DNS では小文字インデックスで引く | 20260922-180419 |
+| DNS の名前解決回数は TTL 120 でも 179k 回/分（水責め込み） | pdns 置き換え後は DNS の CPU は誤差 | 20260922-180507〜 |
+| nginx 1.18 は `keepalive_requests` 既定 100 | 100 回ごとに TLS フルハンドシェイク。100000 に | 20260922-183533 |
+| `worker_connections` を上げるなら `worker_rlimit_nofile` も | 上げないと accept4 EMFILE で 5xx | 20260922-183308 |
+| gorilla/sessions は毎リクエスト gob デコード（pprof 8%） | Cookie 値 → 中身 をメモ化 | 20260922-185050 |
+| **予約枠は負荷開始 10 秒で人気時間帯が埋まる**。以後 `expected:201 actual:400` が 4600 回/分 | 初期データの仕様。視聴者の投入レートもここで 200→150/5秒に落ちる | journal 18:40 |
+| `expected:400 actual:201`（モデレート済みスパム）は 130〜180 件/回 | その配信の最初の moderate より前に来る。マニュアルで減点対象外 | journal 18:40 |
+| スコア ≒ 195 × 完了した視聴者数 | 視聴者の投入はベンチのペース。1 リクエストの遅延を下げるしかない | scores/log.md |
+| トラフィックの 69% は `pipe.u.isucon.local` 宛（GET icon 270k、全部 304） | nginx を DNS で 2 台に分けても pipe が偏る | journal 18:55 |
+| 同一コードのブレは ±3% | 3% 以下の差は判断材料にしない | 20260922-183824 / 184029 |
 
 ## ベンチマーカーはブラックボックス
 
