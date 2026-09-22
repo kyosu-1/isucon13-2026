@@ -1,0 +1,9 @@
+timestamp : 20260922-190719
+commit    : 5c802aa  bench: 426837 MySQL 再起動後の2回目（劣化を再現）
+entry     : isucon13-3 (nginx)
+dns_host  : isucon13-1 (10.100.0.155)
+app_hosts : isucon13-1 isucon13-2 isucon13-3
+db_host   : isucon13-2
+bench     : isucon13-4 (10.100.0.186)
+note      : ANALYZE TABLE 後（統計の仮説）
+dirty     : 0 files uncommitted (webapp/ etc/)

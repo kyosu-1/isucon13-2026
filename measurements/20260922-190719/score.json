@@ -1,0 +1,95 @@
+{
+  "pass": true,
+  "score": 424947,
+  "error_count": 155,
+  "errors": [
+    {
+      "count": 152,
+      "msg": "[一般エラー] POST /api/livestream/N/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:N, actual:N)"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] GET /api/user/<name>/icon: Get \"https://pipe.u.isucon.local:N/api/user/<name>/icon\": dial tcp N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    },
+    {
+      "count": 1,
+      "msg": "[リクエストタイムアウト] GET /api/livestream: Get \"https://pipe.u.isucon.local:N/api/livestream\": dial tcp N.N.N.N:N: i/o timeout: タイムアウトによりリクエスト失敗"
+    }
+  ],
+  "messages": [
+    "[一般エラー] POST /api/livestream/7662/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7532/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)",
+    "[一般エラー] POST /api/livestream/7548/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:400)",
+    "[一般エラー] POST /api/livestream/reservation へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:400)",
+    "[一般エラー] POST /api/livestream/7735/livecomment へのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:400, actual:201)"
+  ],
+  "scenarios": {
+    "aggressive-streamer-moderate": {
+      "success": 5801,
+      "fail": 0
+    },
+    "dns-watertorture-attack": {
+      "success": 2016,
+      "fail": 0
+    },
+    "streamer-cold-reserve": {
+      "success": 1372,
+      "fail": 5057
+    },
+    "streamer-moderate": {
+      "success": 3590,
+      "fail": 20
+    },
+    "viewer-report": {
+      "success": 59,
+      "fail": 0
+    },
+    "viewer-spam": {
+      "success": 5642,
+      "fail": 161
+    },
+    "viewer": {
+      "success": 2162,
+      "fail": 17
+    },
+    "streamer-cold-reserve-fail": {
+      "success": 0,
+      "fail": 5057
+    },
+    "streamer-moderate-fail": {
+      "success": 0,
+      "fail": 20
+    },
+    "viewer-fail": {
+      "success": 0,
+      "fail": 17
+    },
+    "viewer-spam-fail": {
+      "success": 0,
+      "fail": 161
+    }
+  },
+  "dns": {
+    "attackers": 15,
+    "resolved": 178874,
+    "failed": 0
+  },
+  "viewers_completed": 2162,
+  "phases": {
+    "initialize_sec": 2.8,
+    "pretest_sec": 4.4,
+    "load_sec": 60.0
+  },
+  "info": [
+    "timeout",
+    "名前解決成功数 178874",
+    "売上: 424947"
+  ],
+  "dns_resolved": 178874,
+  "scenario_success": 20642,
+  "scenario_fail": 10510
+}
