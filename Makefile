@@ -52,6 +52,7 @@ setup: ## 環境を作り直したあとの初期化を全部やる（冪等）
 	@./tools/setup/gen-hosts.sh
 	@./tools/setup/bench-node.sh $(BENCH)
 	@./tools/setup/install-tools.sh $(APP_HOSTS)
+	@./tools/setup/mysql-remote-users.sh $(DB_HOST)
 	@$(MAKE) deploy
 	@$(MAKE) measure-on
 	@echo "==> setup 完了。make bench でスコアを確認する。"

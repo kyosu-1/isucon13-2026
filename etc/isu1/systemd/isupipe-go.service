@@ -2,7 +2,7 @@
 Description=isupipe-go
 After=syslog.target
 After=mysql.service
-Requires=mysql.service
+# MySQL は別ノード（isucon13-2）なので Requires しない
 
 [Service]
 WorkingDirectory=/home/isucon/webapp/go
